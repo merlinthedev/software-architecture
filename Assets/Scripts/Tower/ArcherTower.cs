@@ -37,25 +37,24 @@ public class ArcherTower : MonoBehaviour, ITower {
         }
     }
 
-    
+
 
     private void Start() {
         drawCirlce(steps, range);
-        
+
         targets = new List<Enemy>();
         targetCollider.radius = _range;
     }
 
     private void Update() {
-
-        if (targets.Count > 0 && targets != null) {
-            InvokeRepeating("attack", 0, 5);
-        }
-
     }
 
     public void attack() {
-        targets[0].takeDamage(_damage);
+        if (targets.Count > 0) {
+            targets[0].takeDamage(_damage);
+        } else {
+            CancelInvoke();
+        }
     }
 
 
@@ -64,6 +63,9 @@ public class ArcherTower : MonoBehaviour, ITower {
         if (other.CompareTag("Enemy")) {
             var enemy = other.GetComponent<Enemy>();
             targets.Add(enemy);
+            if (targets.IndexOf(enemy) == 0) {
+                InvokeRepeating("attack", 0, fireRate);
+            }
             Debug.Log("Enemy has been added to the list. (WITH GETCOMPONENT, PLS FIX =D)");
         }
     }

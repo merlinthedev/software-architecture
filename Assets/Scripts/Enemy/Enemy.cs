@@ -73,7 +73,7 @@ public class Enemy : MonoBehaviour, IEnemy {
             return;
         }
         this.health -= damage;
-        Debug.Log("Enemy health after taking damage");
+        Debug.Log("Enemy health after taking damage: " + this.health);
 
     }
 
