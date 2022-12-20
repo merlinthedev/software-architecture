@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArcherTower : MonoBehaviour, ITower {
+public class SingleTargetTower : MonoBehaviour, ITower {
 
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private SphereCollider targetCollider;
@@ -11,6 +11,7 @@ public class ArcherTower : MonoBehaviour, ITower {
     [SerializeField] private int _damage;
     [SerializeField] private int _cost;
     [SerializeField] private float _fireRate;
+    [SerializeField] private float drawHeight;
 
     public List<Enemy> targets;
 
@@ -44,16 +45,19 @@ public class ArcherTower : MonoBehaviour, ITower {
 
         targets = new List<Enemy>();
         targetCollider.radius = _range;
+        targetCollider.center = new Vector3(0, drawHeight, 0);
+
+        StartCoroutine(attack());
     }
 
     private void Update() {
     }
 
-    public void attack() {
-        if (targets.Count > 0) {
+    IEnumerator attack() {
+        while (targets.Count > 0) {
             targets[0].takeDamage(_damage);
-        } else {
-            CancelInvoke();
+
+            yield return new WaitForSeconds(_fireRate);
         }
     }
 
@@ -63,9 +67,6 @@ public class ArcherTower : MonoBehaviour, ITower {
         if (other.CompareTag("Enemy")) {
             var enemy = other.GetComponent<Enemy>();
             targets.Add(enemy);
-            if (targets.IndexOf(enemy) == 0) {
-                InvokeRepeating("attack", 0, fireRate);
-            }
             Debug.Log("Enemy has been added to the list. (WITH GETCOMPONENT, PLS FIX =D)");
         }
     }
@@ -84,7 +85,7 @@ public class ArcherTower : MonoBehaviour, ITower {
         lineRenderer.positionCount = steps + 1;
         lineRenderer.useWorldSpace = false;
         float x;
-        float y = -5f;
+        float y = drawHeight;
         float z;
 
         float angle = 20f;

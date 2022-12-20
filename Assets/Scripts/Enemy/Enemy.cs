@@ -8,6 +8,14 @@ public class Enemy : MonoBehaviour, IEnemy {
     [SerializeField] private int _health;
     [SerializeField] private int _value;
 
+    [SerializeField] private bool alive = true;
+
+    [SerializeField] private Collider _collider;
+
+
+    private Vector3 lastPosition;
+    private float distanceTraveled;
+
     public float movementSpeed {
         get {
             return _movementSpeed;
@@ -37,7 +45,7 @@ public class Enemy : MonoBehaviour, IEnemy {
         }
     }
 
-    [SerializeField] private WaypointManager waypointManager;
+    private WaypointManager waypointManager;
     private List<GameObject> waypoints;
     private int pointer;
 
@@ -52,6 +60,14 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     private void Update() {
         moveEnemy();
+        trackDistance();
+    }
+
+    private void trackDistance() {
+        distanceTraveled += Vector3.Distance(transform.position, lastPosition);
+        lastPosition = transform.position;
+
+        //Debug.Log("Total distance traveled: " + distanceTraveled);
     }
 
     private void moveEnemy() {
@@ -69,12 +85,38 @@ public class Enemy : MonoBehaviour, IEnemy {
     public void takeDamage(int damage) {
         if (this.health - damage <= 0) {
             // enemy needs to die
-            Debug.LogError("Enemy has died however, you have not implemented this method yet :)");
+            //Debug.LogError("Enemy has died however, you have not implemented this method yet :)");
+            die();
             return;
         }
         this.health -= damage;
         Debug.Log("Enemy health after taking damage: " + this.health);
 
+    }
+
+    private void die() {
+        this.alive = false;
+        //GameManager.instance.addMoney(_value);
+        //EnemyManager.instance.removeFromList(this);
+        //EnemyManager.instance.removeFromMap(_collider);
+
+        Destroy(this.gameObject);
+    }
+
+    public float getDistanceTraveled() {
+        return this.distanceTraveled;
+    }
+
+    public void setWaypointManager(WaypointManager wp) {
+        this.waypointManager = wp;
+    }
+
+    public Collider getCollider() {
+        return this._collider;
+    }
+
+    public bool isAlive() {
+        return this.alive;
     }
 
 }
