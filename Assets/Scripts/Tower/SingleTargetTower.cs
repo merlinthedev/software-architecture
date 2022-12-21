@@ -54,9 +54,14 @@ public class SingleTargetTower : MonoBehaviour, ITower {
     }
 
     IEnumerator attack() {
-        while (targets.Count > 0) {
-            targets[0].takeDamage(_damage);
-
+        while (true) {
+            if (targets.Count > 0) {
+                if (targets[0].isAlive()) {
+                    targets[0].takeDamage(_damage);
+                } else {
+                    targets.RemoveAt(0);
+                }
+            }
             yield return new WaitForSeconds(_fireRate);
         }
     }
@@ -65,18 +70,16 @@ public class SingleTargetTower : MonoBehaviour, ITower {
     private void OnTriggerEnter(Collider other) {
         // When target enters the collider, add them to the target list
         if (other.CompareTag("Enemy")) {
-            var enemy = other.GetComponent<Enemy>();
+            var enemy = EnemyManager.instance.getEnemyFromMap(other);
             targets.Add(enemy);
-            Debug.Log("Enemy has been added to the list. (WITH GETCOMPONENT, PLS FIX =D)");
         }
     }
 
     private void OnTriggerExit(Collider other) {
         if (other.CompareTag("Enemy")) {
-            var enemy = other.GetComponent<Enemy>();
+            var enemy = EnemyManager.instance.getEnemyFromMap(other);
             if (targets.Contains(enemy)) {
                 targets.Remove(enemy);
-                Debug.Log("Enemy has been removed from the list. (WITH GETCOMPONENT, PLS FIX =D)");
             }
         }
     }

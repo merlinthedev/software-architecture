@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
     [SerializeField] private int health;
-    private int money;
+    [SerializeField] private int money = 0;
     private int waveNumber;
 
     public static GameManager instance;
@@ -22,5 +22,9 @@ public class GameManager : MonoBehaviour {
             return;
         }
         this.health -= damage;
+    }
+
+    public void addMoney(int value) {
+        this.money += value;
     }
 }

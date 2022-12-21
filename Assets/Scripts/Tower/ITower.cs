@@ -10,7 +10,6 @@ public interface ITower {
 
     float fireRate { get; set; }
 
-    IEnumerator attack();
     void drawCirlce(int steps, float radius);
 
 

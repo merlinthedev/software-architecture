@@ -128,8 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60e7f37877cbda0438a136ae4f7870f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementSpeed: 5
-  _health: 2
+  _movementSpeed: 1
+  _health: 5
   _value: 5
   alive: 1
   _collider: {fileID: 7880921570526105761}

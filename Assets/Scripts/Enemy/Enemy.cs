@@ -54,7 +54,6 @@ public class Enemy : MonoBehaviour, IEnemy {
             Debug.LogError("waypoint error");
         } else {
             waypoints = waypointManager.getWaypointList();
-            Debug.Log("Waypoints initialized");
         }
     }
 
@@ -74,7 +73,7 @@ public class Enemy : MonoBehaviour, IEnemy {
         if (pointer < waypoints.Count) {
             transform.position = Vector3.MoveTowards(transform.position, waypoints[pointer].transform.position, _movementSpeed * Time.deltaTime);
             if ((transform.position - waypoints[pointer].transform.position).magnitude < 0.001) {
-                Debug.Log("arrived at destination");
+                //Debug.Log("arrived at destination");
                 pointer++;
             }
         }
@@ -96,9 +95,10 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     private void die() {
         this.alive = false;
-        //GameManager.instance.addMoney(_value);
-        //EnemyManager.instance.removeFromList(this);
-        //EnemyManager.instance.removeFromMap(_collider);
+
+        GameManager.instance.addMoney(_value);
+        EnemyManager.instance.removeFromList(this);
+        EnemyManager.instance.removeFromMap(_collider);
 
         Destroy(this.gameObject);
     }
