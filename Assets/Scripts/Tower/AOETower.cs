@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-class AOETower : MonoBehaviour, ITower {
+class AOETower : MonoBehaviour {
     [SerializeField] private int steps;
     
     [SerializeField] private float _range;
@@ -19,41 +19,11 @@ class AOETower : MonoBehaviour, ITower {
 
     public List<Enemy> targets = new List<Enemy>();
 
-    public float range {
-        get {
-            return _range;
-        }
-        set {
-            _range = value;
-        }
-    }
+    #region protected
+    
 
-    public int damage {
-        get {
-            return _damage;
-        }
-        set {
-            _damage = value;
-        }
-    }
-
-    public int cost {
-        get {
-            return _cost;
-        }
-        set {
-            _cost = value;
-        }
-    }
-
-    public float fireRate {
-        get {
-            return _fireRate;
-        }
-        set {
-            _fireRate = value;
-        }
-    }
+    
+    #endregion
 
     private void Start() {
         StartCoroutine(attack());

@@ -15,6 +15,8 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     private Vector3 lastPosition;
     private float distanceTraveled;
+   
+    
 
     public float movementSpeed {
         get {

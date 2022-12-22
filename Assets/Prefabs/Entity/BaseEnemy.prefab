@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7880921570526105761}
   - component: {fileID: 663528910021728088}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: BaseEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,8 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60e7f37877cbda0438a136ae4f7870f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementSpeed: 1
-  _health: 5
+  _movementSpeed: 5
+  _health: 8
   _value: 5
   alive: 1
   _collider: {fileID: 7880921570526105761}
