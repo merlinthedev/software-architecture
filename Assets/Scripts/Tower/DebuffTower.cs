@@ -13,7 +13,7 @@ public class DebuffTower : Tower {
 
     [Header("Tower statistics")]
     [SerializeField] private float fireRate;
-    [SerializeField] private int damage;
+    [SerializeField] private float damage;
     [SerializeField] private int cost;
 
     #region protected
@@ -56,7 +56,7 @@ public class DebuffTower : Tower {
         }
     }
 
-    protected override int Damage {
+    protected override float Damage {
         get {
             return damage;
         }

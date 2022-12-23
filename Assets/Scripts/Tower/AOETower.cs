@@ -8,7 +8,7 @@ class AOETower : Tower {
     [SerializeField] private int steps;
 
     [SerializeField] private float range;
-    [SerializeField] private int damage;
+    [SerializeField] private float damage;
     [SerializeField] private int cost;
     [SerializeField] private float fireRate;
 
@@ -60,7 +60,7 @@ class AOETower : Tower {
         }
     }
 
-    protected override int Damage {
+    protected override float Damage {
         get {
             return damage;
         }
@@ -120,7 +120,7 @@ class AOETower : Tower {
             if (targets.Count > 0) {
                 foreach (Enemy enemy in targets.ToList()) {
                     if (enemy.isAlive()) {
-                        enemy.takeDamage(damage);
+                        enemy.takeDamage((int)damage);
                     } else {
                         targets.Remove(enemy);
                     }

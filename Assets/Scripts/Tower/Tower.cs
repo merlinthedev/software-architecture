@@ -11,7 +11,7 @@ public abstract class Tower : MonoBehaviour {
     protected abstract float DrawHeight { get; set; }
 
 
-    protected abstract int Damage { get; set; }
+    protected abstract float Damage { get; set; }
     protected abstract float FireRate { get; set; }
 
     protected abstract int Cost { get; set; }

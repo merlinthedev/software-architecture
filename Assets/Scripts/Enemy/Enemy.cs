@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour, IEnemy {
     [SerializeField] private int value;
 
     [SerializeField] private bool alive = true;
+    [SerializeField] private bool debuffed = false;
 
     [SerializeField] private Collider enemyCollider;
 
@@ -115,6 +116,10 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     public bool isAlive() {
         return this.alive;
+    }
+
+    public bool isDebuffed() {
+        return this.debuffed;
     }
 
 }
