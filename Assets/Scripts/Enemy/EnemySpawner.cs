@@ -24,9 +24,10 @@ public class EnemySpawner : MonoBehaviour {
 
     private void spawnEnemy() {
         Enemy returned = Instantiate(enemy, spawnerPosition.position, Quaternion.identity);
-        EnemyManager.instance.getEnemyMap().Add(returned.getCollider(), returned);
-        EnemyManager.instance.addToList(returned);
-        returned.setWaypointManager(wp);
+        EnemyManager.getInstance().getEnemyMap().Add(returned.getCollider(), returned);
+        EnemyManager.getInstance().addToList(returned);
+        //returned.setWaypointManager(wp);
+        returned.setWaypointList(wp.getWaypointList());
 
 
     }

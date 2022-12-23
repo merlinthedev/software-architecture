@@ -11,7 +11,8 @@ public class WaypointManager : MonoBehaviour {
 
 
     public List<GameObject> getWaypointList() {
-        return this.waypointList;
+        Debug.Log("Passing waypoint list with " + waypointList.Count + " waypoints");
+        return waypointList;
     }
 
 }

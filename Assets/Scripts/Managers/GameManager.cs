@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
     [SerializeField] private int health;
     [SerializeField] private int money = 0;
-    private int waveNumber;
+    [SerializeField] private int waveNumber;
 
-    public static GameManager instance;
+    private static GameManager instance;
 
     private void Awake() {
         if (instance == null) {
@@ -26,5 +27,9 @@ public class GameManager : MonoBehaviour {
 
     public void addMoney(int value) {
         this.money += value;
+    }
+
+    public static GameManager getInstance() {
+        return instance;
     }
 }

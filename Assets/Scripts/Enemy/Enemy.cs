@@ -4,60 +4,53 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IEnemy {
 
-    [SerializeField] private float _movementSpeed;
-    [SerializeField] private int _health;
-    [SerializeField] private int _value;
+    [SerializeField] private float movementSpeed;
+    [SerializeField] private int health;
+    [SerializeField] private int value;
 
     [SerializeField] private bool alive = true;
 
-    [SerializeField] private Collider _collider;
+    [SerializeField] private Collider enemyCollider;
 
 
     private Vector3 lastPosition;
     private float distanceTraveled;
-   
-    
 
-    public float movementSpeed {
+
+    #region Properties
+    public float MovementSpeed {
         get {
-            return _movementSpeed;
+            return movementSpeed;
         }
         set {
-            _movementSpeed = value;
+            movementSpeed = value;
         }
     }
 
-    public int health {
+    public int Health {
         get {
-            return _health;
+            return health;
         }
 
         set {
-            _health = value;
+            health = value;
         }
     }
 
-    public int value {
+    public int Value {
         get {
-            return _value;
+            return value;
         }
 
         set {
-            _value = value;
+            this.value = value;
         }
     }
+    #endregion
 
-    private WaypointManager waypointManager;
     private List<GameObject> waypoints;
     private int pointer;
 
-    private void Start() {
-        if (waypointManager == null) {
-            Debug.LogError("waypoint error");
-        } else {
-            waypoints = waypointManager.getWaypointList();
-        }
-    }
 
     private void Update() {
         moveEnemy();
@@ -73,7 +66,7 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     private void moveEnemy() {
         if (pointer < waypoints.Count) {
-            transform.position = Vector3.MoveTowards(transform.position, waypoints[pointer].transform.position, _movementSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, waypoints[pointer].transform.position, movementSpeed * Time.deltaTime);
             if ((transform.position - waypoints[pointer].transform.position).magnitude < 0.001) {
                 //Debug.Log("arrived at destination");
                 pointer++;
@@ -84,23 +77,26 @@ public class Enemy : MonoBehaviour, IEnemy {
 
 
     public void takeDamage(int damage) {
-        if (this.health - damage <= 0) {
+        if (this.Health - damage <= 0) {
             // enemy needs to die
             //Debug.LogError("Enemy has died however, you have not implemented this method yet :)");
             die();
             return;
         }
-        this.health -= damage;
-        Debug.Log("Enemy health after taking damage: " + this.health);
+        this.Health -= damage;
+        Debug.Log("Enemy health after taking damage: " + this.Health);
 
     }
 
     private void die() {
         this.alive = false;
 
-        GameManager.instance.addMoney(_value);
-        EnemyManager.instance.removeFromList(this);
-        EnemyManager.instance.removeFromMap(_collider);
+        // Global wallet object?
+        GameManager.getInstance().addMoney(value);
+
+        // Events for removing from data structures?
+        EnemyManager.getInstance().removeFromList(this);
+        EnemyManager.getInstance().removeFromMap(enemyCollider);
 
         Destroy(this.gameObject);
     }
@@ -109,12 +105,12 @@ public class Enemy : MonoBehaviour, IEnemy {
         return this.distanceTraveled;
     }
 
-    public void setWaypointManager(WaypointManager wp) {
-        this.waypointManager = wp;
+    public void setWaypointList(List<GameObject> waypoints) {
+        this.waypoints = waypoints;
     }
 
     public Collider getCollider() {
-        return this._collider;
+        return this.enemyCollider;
     }
 
     public bool isAlive() {

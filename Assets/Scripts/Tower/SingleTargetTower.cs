@@ -88,7 +88,7 @@ public class SingleTargetTower : Tower {
 
     private void Start() {
         base.drawCircle(steps, range, lineRenderer, drawHeight);
-        base.initialize();
+        base.initialize(targetCollider, range, drawHeight);
 
         targets = new List<Enemy>();
         StartCoroutine(attack());
@@ -114,14 +114,14 @@ public class SingleTargetTower : Tower {
     private void OnTriggerEnter(Collider other) {
         // When target enters the collider, add them to the target list
         if (other.CompareTag("Enemy")) {
-            var enemy = EnemyManager.instance.getEnemyFromMap(other);
+            var enemy = EnemyManager.getInstance().getEnemyFromMap(other);
             targets.Add(enemy);
         }
     }
 
     private void OnTriggerExit(Collider other) {
         if (other.CompareTag("Enemy")) {
-            var enemy = EnemyManager.instance.getEnemyFromMap(other);
+            var enemy = EnemyManager.getInstance().getEnemyFromMap(other);
             if (targets.Contains(enemy)) {
                 targets.Remove(enemy);
             }

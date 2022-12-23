@@ -18,9 +18,9 @@ public abstract class Tower : MonoBehaviour {
 
     protected abstract IEnumerator attack();
 
-    protected void initialize() {
-        TargetCollider.radius = Range;
-        TargetCollider.center = new Vector3(0, DrawHeight, 0);
+    protected void initialize(SphereCollider targetCollider, float range, float drawHeight) {
+        targetCollider.radius = range;
+        targetCollider.center = new Vector3(0, drawHeight, 0);
     }
 
     protected void drawCircle(int steps, float radius, LineRenderer lineRenderer, float drawHeight) {

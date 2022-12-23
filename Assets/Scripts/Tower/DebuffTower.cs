@@ -91,8 +91,8 @@ public class DebuffTower : Tower {
     }
 
     void Start() {
-        base.initialize();
-        base.drawCircle(Steps, Range, LineRenderer, DrawHeight);
+        base.initialize(targetCollider, range, drawHeight);
+        base.drawCircle(steps, range, lineRenderer, drawHeight);
     }
 
     void Update() {

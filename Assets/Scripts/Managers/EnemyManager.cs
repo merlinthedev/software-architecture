@@ -7,7 +7,7 @@ public class EnemyManager : MonoBehaviour {
     private List<Enemy> enemyList;
     private Dictionary<Collider, Enemy> enemyMap = new Dictionary<Collider, Enemy>();
 
-    public static EnemyManager instance;
+    private static EnemyManager instance;
 
     private void Awake() {
         if (instance == null) instance = this;
@@ -39,5 +39,9 @@ public class EnemyManager : MonoBehaviour {
 
     public void removeFromMap(Collider collider) {
         this.enemyMap.Remove(collider);
+    }
+
+    public static EnemyManager getInstance() {
+        return instance;
     }
 }
