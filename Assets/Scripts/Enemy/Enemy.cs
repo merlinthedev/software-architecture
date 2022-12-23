@@ -76,16 +76,33 @@ public class Enemy : MonoBehaviour, IEnemy {
     }
 
 
-
-    public void takeDamage(int damage) {
-        if (this.Health - damage <= 0) {
-            // enemy needs to die
-            //Debug.LogError("Enemy has died however, you have not implemented this method yet :)");
-            die();
-            return;
+    /// <summary>
+    /// Have the enemy take damage, if the DamageType is debuff, the enemy's movement speed will be multiplied by the damage
+    /// Example: if the damage is 0.5, the enemy's movement speed will be halved
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="damageType"></param>
+    public void takeDamage(float damage, DamageType damageType) {
+        switch (damageType) {
+            case DamageType.FLAT:
+                if (this.Health - (int)damage <= 0) {
+                    // enemy needs to die
+                    //Debug.LogError("Enemy has died however, you have not implemented this method yet :)");
+                    die();
+                    return;
+                }
+                this.Health -= (int)damage;
+                Debug.Log("Enemy health after taking damage: " + this.Health);
+                break;
+            case DamageType.DEBUFF:
+                if (!debuffed) {
+                    debuffed = true;
+                    this.movementSpeed *= damage;
+                    Debug.Log("movement speed has been decreased.");
+                }
+                break;
         }
-        this.Health -= damage;
-        Debug.Log("Enemy health after taking damage: " + this.Health);
+
 
     }
 
@@ -120,6 +137,12 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     public bool isDebuffed() {
         return this.debuffed;
+    }
+
+    // Enum for damage types
+    public enum DamageType {
+        FLAT,
+        DEBUFF,
     }
 
 }

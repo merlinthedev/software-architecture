@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour {
 
+    [Header("Spawning")]
+    [SerializeField] private float spawnRate;
+    [SerializeField] private Enemy enemy;
+    [SerializeField] private Transform spawnerPosition;
+    [SerializeField] private int maxEnemies;
+    [SerializeField] private int enemiesSpawned;
+
+
+    [SerializeField] private WaypointManager wp;
+
+
     private List<Enemy> enemyList;
     private Dictionary<Collider, Enemy> enemyMap = new Dictionary<Collider, Enemy>();
 
@@ -15,18 +26,25 @@ public class EnemyManager : MonoBehaviour {
 
     private void Start() {
         enemyList = new List<Enemy>();
+
+        StartCoroutine(spawnEnemy());
     }
 
-    public void addToList(Enemy enemy) {
-        enemyList.Add(enemy);
+    IEnumerator spawnEnemy() {
+        while (enemiesSpawned < maxEnemies) {
+            Enemy returned = Instantiate(enemy, spawnerPosition.position, Quaternion.identity);
+            enemyMap.Add(returned.getCollider(), returned);
+            enemyList.Add(returned);
+            returned.setWaypointList(wp.getWaypointList());
+            enemiesSpawned++;
+            yield return new WaitForSeconds(spawnRate);
+        }
+
     }
+
 
     public void removeFromList(Enemy enemy) {
         this.enemyList.Remove(enemy);
-    }
-
-    public List<Enemy> getEnemyList() {
-        return this.enemyList;
     }
 
     public Dictionary<Collider, Enemy> getEnemyMap() {

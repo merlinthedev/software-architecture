@@ -120,7 +120,7 @@ class AOETower : Tower {
             if (targets.Count > 0) {
                 foreach (Enemy enemy in targets.ToList()) {
                     if (enemy.isAlive()) {
-                        enemy.takeDamage((int)damage);
+                        enemy.takeDamage(damage, Enemy.DamageType.FLAT);
                     } else {
                         targets.Remove(enemy);
                     }

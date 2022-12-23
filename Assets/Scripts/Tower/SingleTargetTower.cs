@@ -101,7 +101,7 @@ public class SingleTargetTower : Tower {
         while (true) {
             if (targets.Count > 0) {
                 if (targets[0].isAlive()) {
-                    targets[0].takeDamage((int)damage);
+                    targets[0].takeDamage(damage, Enemy.DamageType.FLAT);
                 } else {
                     targets.RemoveAt(0);
                 }
