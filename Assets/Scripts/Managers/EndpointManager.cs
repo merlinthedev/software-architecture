@@ -15,6 +15,8 @@ public class EndpointManager : MonoBehaviour {
         if (other.CompareTag("Enemy")) {
             Enemy hit;
             EnemyManager.getInstance().getEnemyMap().TryGetValue(other, out hit);
+            EnemyManager.getInstance().removeFromList(hit);
+            EnemyManager.getInstance().removeFromMap(hit.getCollider());
             gm.takeGlobalDamage(hit.Value);
             Destroy(hit.gameObject);
         }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,8 +15,11 @@ public class EnemyManager : MonoBehaviour {
 
     [SerializeField] private WaypointManager wp;
 
+    [SerializeField] private int waveDelay;
 
-    private List<Enemy> enemyList;
+    public List<Wave> waveContents;
+
+    [SerializeField] private List<Enemy> enemyList;
     private Dictionary<Collider, Enemy> enemyMap = new Dictionary<Collider, Enemy>();
 
     private static EnemyManager instance;
@@ -27,18 +31,37 @@ public class EnemyManager : MonoBehaviour {
     private void Start() {
         enemyList = new List<Enemy>();
 
+
         StartCoroutine(spawnEnemy());
     }
 
     IEnumerator spawnEnemy() {
-        while (enemiesSpawned < maxEnemies) {
-            Enemy returned = Instantiate(enemy, spawnerPosition.position, Quaternion.identity);
-            enemyMap.Add(returned.getCollider(), returned);
-            enemyList.Add(returned);
-            returned.setWaypointList(wp.getWaypointList());
-            enemiesSpawned++;
-            yield return new WaitForSeconds(spawnRate);
+        foreach (Wave wave in waveContents) {
+            Debug.LogWarning("Wave: " + waveContents.IndexOf(wave));
+            enemiesSpawned = 0;
+            foreach (Enemy enemy in wave.enemies) {
+                Enemy returned = Instantiate(enemy, spawnerPosition.position, Quaternion.identity);
+                enemyMap.Add(returned.getCollider(), returned);
+                enemyList.Add(returned);
+                returned.setWaypointList(wp.getWaypointList());
+                enemiesSpawned++;
+                yield return new WaitForSeconds(spawnRate);
+            }
+
+            // Wait for enemyList to be empty then start cooldown
+            while (enemyList.Count > 0) {
+                yield return null;
+            }
+
+            Debug.LogWarning("All enemies have been destroyed, starting " + waveDelay + " second cooldown");
+
+            yield return new WaitForSeconds(waveDelay);
+
+
+
         }
+
+        //yield return new WaitForSeconds(spawnRate);
 
     }
 

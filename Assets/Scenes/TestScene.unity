@@ -1538,6 +1538,50 @@ MonoBehaviour:
   maxEnemies: 5
   enemiesSpawned: 0
   wp: {fileID: 1779413711}
+  waveDelay: 10
+  waveContents:
+  - enemies:
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+  - enemies:
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+  - enemies:
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+  - enemies:
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+    - {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
+  - enemies:
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+    - {fileID: 663528910021728088, guid: c7beabed113db4e498f61237153cb993, type: 3}
+  enemyList: []
 --- !u!1 &1490355546
 GameObject:
   m_ObjectHideFlags: 0
@@ -1556,7 +1600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1490355547
 Transform:
   m_ObjectHideFlags: 0
