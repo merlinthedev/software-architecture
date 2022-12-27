@@ -29,7 +29,13 @@ public class GameManager : MonoBehaviour {
         this.money += value;
     }
 
+    public void setWave(int value) {
+        this.waveNumber = value;
+    }
+    
     public static GameManager getInstance() {
         return instance;
     }
+
+
 }

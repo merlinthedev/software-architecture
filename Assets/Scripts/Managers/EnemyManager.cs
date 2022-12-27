@@ -37,7 +37,8 @@ public class EnemyManager : MonoBehaviour {
 
     IEnumerator spawnEnemy() {
         foreach (Wave wave in waveContents) {
-            Debug.LogWarning("Wave: " + waveContents.IndexOf(wave));
+            Debug.LogWarning("Wave: " + (waveContents.IndexOf(wave) + 1));
+            GameManager.getInstance().setWave(waveContents.IndexOf(wave) + 1);
             enemiesSpawned = 0;
             foreach (Enemy enemy in wave.enemies) {
                 Enemy returned = Instantiate(enemy, spawnerPosition.position, Quaternion.identity);
@@ -49,7 +50,7 @@ public class EnemyManager : MonoBehaviour {
             }
 
             // Wait for enemyList to be empty then start cooldown
-            while (enemyList.Count > 0) {
+            while (enemyList.Count > 0) { 
                 yield return null;
             }
 
