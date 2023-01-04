@@ -3,7 +3,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour {
+public class EnemyManager : MonoBehaviour
+{
 
     [Header("Spawning")]
     [SerializeField] private float spawnRate;
@@ -13,7 +14,7 @@ public class EnemyManager : MonoBehaviour {
     [SerializeField] private int enemiesSpawned;
 
 
-    [SerializeField] private WaypointManager wp;
+    [SerializeField] private Transform endpointTransform;
 
     [SerializeField] private int waveDelay;
 
@@ -24,66 +25,85 @@ public class EnemyManager : MonoBehaviour {
 
     private static EnemyManager instance;
 
-    private void Awake() {
+    private void Awake()
+    {
         if (instance == null) instance = this;
     }
 
-    private void Start() {
+    private void Start()
+    {
         enemyList = new List<Enemy>();
 
 
         StartCoroutine(spawnEnemy());
     }
 
-    IEnumerator spawnEnemy() {
-        foreach (Wave wave in waveContents) {
-            Debug.LogWarning("Wave: " + (waveContents.IndexOf(wave) + 1));
-            GameManager.getInstance().setWave(waveContents.IndexOf(wave) + 1);
-            enemiesSpawned = 0;
-            foreach (Enemy enemy in wave.enemies) {
-                Enemy returned = Instantiate(enemy, spawnerPosition.position, Quaternion.identity);
-                enemyMap.Add(returned.getCollider(), returned);
-                enemyList.Add(returned);
-                returned.setWaypointList(wp.getWaypointList());
-                enemiesSpawned++;
-                yield return new WaitForSeconds(spawnRate);
+    IEnumerator spawnEnemy()
+    {
+        while (!GameManager.getInstance().isGameOver())
+        {
+            foreach (Wave wave in waveContents)
+            {
+                Debug.LogWarning("Wave: " + (waveContents.IndexOf(wave) + 1));
+                GameManager.getInstance().setWave(waveContents.IndexOf(wave) + 1);
+                // enemiesSpawned = 0;
+                foreach (Enemy enemy in wave.enemies)
+                {
+                    Enemy returned = Instantiate(enemy, spawnerPosition.position, Quaternion.identity);
+                    enemyMap.Add(returned.getCollider(), returned);
+                    enemyList.Add(returned);
+                    returned.setDestinationTransform(endpointTransform);
+                    // enemiesSpawned++;
+                    yield return new WaitForSeconds(spawnRate);
+                }
+
+                // Wait for enemyList to be empty then start cooldown
+                while (enemyList.Count > 0)
+                {
+                    yield return null;
+                }
+
+                Debug.LogWarning("All enemies have been destroyed, starting " + waveDelay + " second cooldown");
+
+                yield return new WaitForSeconds(waveDelay);
+
+
+
             }
-
-            // Wait for enemyList to be empty then start cooldown
-            while (enemyList.Count > 0) { 
-                yield return null;
-            }
-
-            Debug.LogWarning("All enemies have been destroyed, starting " + waveDelay + " second cooldown");
-
-            yield return new WaitForSeconds(waveDelay);
-
-
-
         }
-
-        //yield return new WaitForSeconds(spawnRate);
 
     }
 
 
-    public void removeFromList(Enemy enemy) {
+    public void removeFromList(Enemy enemy)
+    {
         this.enemyList.Remove(enemy);
     }
 
-    public Dictionary<Collider, Enemy> getEnemyMap() {
+    public Dictionary<Collider, Enemy> getEnemyMap()
+    {
         return this.enemyMap;
     }
 
-    public Enemy getEnemyFromMap(Collider collider) {
+    public List<Enemy> getEnemyList()
+    {
+        return this.enemyList;
+
+    }
+
+
+    public Enemy getEnemyFromMap(Collider collider)
+    {
         return this.enemyMap[collider];
     }
 
-    public void removeFromMap(Collider collider) {
+    public void removeFromMap(Collider collider)
+    {
         this.enemyMap.Remove(collider);
     }
 
-    public static EnemyManager getInstance() {
+    public static EnemyManager getInstance()
+    {
         return instance;
     }
 }

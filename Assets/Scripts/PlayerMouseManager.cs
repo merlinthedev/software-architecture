@@ -7,6 +7,9 @@ public class PlayerMouseManager : MonoBehaviour {
 
     [SerializeField] private Camera mainCamera;
 
+    private bool isHovering = false;
+
+
     private void Update() {
         if (Input.GetMouseButtonDown(0)) {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -15,12 +18,15 @@ public class PlayerMouseManager : MonoBehaviour {
                 if (hit.collider.gameObject.tag == "Tile") {
                     Debug.Log("Tile hit");
                     // Handle click
+                    isHovering = false;
                 }
             }
         }
     }
 
-    void openGUI() {
-        // Open GUI
+    public void dragTower() {
+        Debug.Log("Initiating tower drag mechanic");
+        isHovering = true;
+
     }
 }

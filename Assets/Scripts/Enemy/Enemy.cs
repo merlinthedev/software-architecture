@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour, IEnemy {
 
@@ -12,6 +13,10 @@ public class Enemy : MonoBehaviour, IEnemy {
     [SerializeField] private bool debuffed = false;
 
     [SerializeField] private Collider enemyCollider;
+
+
+    [SerializeField] private NavMeshAgent agent;
+    private Transform endpointTransform;
 
 
     private Vector3 lastPosition;
@@ -52,6 +57,9 @@ public class Enemy : MonoBehaviour, IEnemy {
     private List<GameObject> waypoints;
     private int pointer;
 
+    private void Start() {
+        agent.speed = movementSpeed;
+    }
 
     private void Update() {
         moveEnemy();
@@ -66,13 +74,15 @@ public class Enemy : MonoBehaviour, IEnemy {
     }
 
     private void moveEnemy() {
-        if (pointer < waypoints.Count) {
-            transform.position = Vector3.MoveTowards(transform.position, waypoints[pointer].transform.position, movementSpeed * Time.deltaTime);
-            if ((transform.position - waypoints[pointer].transform.position).magnitude < 0.001) {
-                //Debug.Log("arrived at destination");
-                pointer++;
-            }
-        }
+        //if (pointer < waypoints.Count) {
+        //    transform.position = Vector3.MoveTowards(transform.position, waypoints[pointer].transform.position, movementSpeed * Time.deltaTime);
+        //    if ((transform.position - waypoints[pointer].transform.position).magnitude < 0.001) {
+        //        //Debug.Log("arrived at destination");
+        //        pointer++;
+        //    }
+        //}
+
+        agent.destination = endpointTransform.transform.position;
     }
 
 
@@ -137,6 +147,10 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     public bool isDebuffed() {
         return this.debuffed;
+    }
+
+    public void setDestinationTransform(Transform target) {
+        this.endpointTransform = target;
     }
 
     // Enum for damage types
