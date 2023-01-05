@@ -14,7 +14,7 @@ public abstract class Tower : MonoBehaviour {
     protected abstract float Damage { get; set; }
     protected abstract float FireRate { get; set; }
 
-    protected abstract int Cost { get; set; }
+    public abstract int Cost { get; set; }
 
     protected abstract IEnumerator attack();
 

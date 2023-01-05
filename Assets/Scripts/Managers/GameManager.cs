@@ -3,68 +3,87 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
     [SerializeField] private int health;
     [SerializeField] private int money = 0;
     [SerializeField] private int waveNumber;
 
     [SerializeField] private bool gameOver = false;
 
+    private bool updated = false;
+
     private static GameManager instance;
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
+    private void Awake() {
+        if (instance == null) {
             instance = this;
         }
     }
 
-    public void takeGlobalDamage(int damage)
-    {
-        if (this.health - damage <= 0)
-        {
+    private void Update() {
+        if (updated) updated = false;
+    }
+
+    public void takeGlobalDamage(int damage) {
+        if (this.health - damage <= 0) {
             globalDeath();
-            this.health = 0;
+            setHealth(0);
             return;
         }
-        this.health -= damage;
+        setHealth(this.health -= damage);
     }
 
-    private void globalDeath()
-    {
-        EnemyManager.getInstance().getEnemyList().ForEach(enemy =>
-        {
+    private void globalDeath() {
+        EnemyManager.getInstance().getEnemyList().ForEach(enemy => {
             enemy.MovementSpeed = 0;
-            gameOver = false;
         });
+        gameOver = false;
     }
 
-    public void addMoney(int value)
-    {
+    public int getMoney() {
+        return this.money;
+    }
+
+    public void addMoney(int value) {
         this.money += value;
+        updated = true;
     }
 
-    public void setWave(int value)
-    {
+    public int getWaveNumber() {
+        return this.waveNumber;
+    }
+    public void setWave(int value) {
         this.waveNumber = value;
+        updated = true;
     }
 
-    public static GameManager getInstance()
-    {
+    public void setHealth(int value) {
+        this.health = value;
+        updated = true;
+    }
+
+    public int getHealth() {
+        return this.health;
+    }
+
+    public static GameManager getInstance() {
         return instance;
     }
 
-    public bool isGameOver()
-    {
+    public bool isGameOver() {
         return gameOver;
     }
 
-    public void setGameOver(bool value)
-    {
+    public void setGameOver(bool value) {
         gameOver = value;
+        updated = true;
     }
+
+    public bool isUpdated() {
+        return this.updated;
+    }
+
+
 
 
 }

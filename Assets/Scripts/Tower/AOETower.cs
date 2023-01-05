@@ -78,7 +78,7 @@ class AOETower : Tower {
         }
     }
 
-    protected override int Cost {
+    public override int Cost {
         get {
             return cost;
         }

@@ -6,4 +6,5 @@ public interface IEnemy {
     public int Health { get; set; }
     public int Value { get; set; }
 
+
 }

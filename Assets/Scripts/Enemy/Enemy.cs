@@ -52,6 +52,8 @@ public class Enemy : MonoBehaviour, IEnemy {
             this.value = value;
         }
     }
+
+    
     #endregion
 
     private List<GameObject> waypoints;

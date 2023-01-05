@@ -215,8 +215,8 @@ MonoBehaviour:
   steps: 32
   range: 2
   damage: 6
-  cost: 0
-  fireRate: 1
+  cost: 110
+  fireRate: 0.6
   drawHeight: 0
   lineRenderer: {fileID: 863219193958770490}
   targetCollider: {fileID: 863219193958770491}

@@ -249,7 +249,7 @@ MonoBehaviour:
   steps: 32
   range: 3
   damage: 4
-  cost: 0
+  cost: 50
   fireRate: 1
   drawHeight: 0
   targets: []
