@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     [SerializeField] private float movementSpeed;
     [SerializeField] private int health;
+    [SerializeField] private int maxHealth;
     [SerializeField] private int value;
 
     [SerializeField] private bool alive = true;
@@ -52,6 +53,16 @@ public class Enemy : MonoBehaviour, IEnemy {
 
         set {
             this.value = value;
+        }
+    }
+
+    public int MaxHealth {
+        get {
+            return maxHealth;
+        }
+
+        set {
+            maxHealth = value;
         }
     }
 

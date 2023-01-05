@@ -1,20 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 public class SingleTargetTower : Tower {
 
-    [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private SphereCollider targetCollider;
+    public Upgrade scriptableUpgradeAS;
+    public Upgrade scriptableUpgradeDMG;
+    public Upgrade scriptableUpgradeRANGE;
+
+    public int asLevel;
+    public int dmgLevel;
+    public int rangeLevel;
+
+    [Header("Range indication")]
     [SerializeField] private int steps;
     [SerializeField] private float range;
-    [SerializeField] private float damage;
-    [SerializeField] private int cost;
-    [SerializeField] private float fireRate;
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private SphereCollider targetCollider;
     [SerializeField] private float drawHeight;
 
-    public List<Enemy> targets;
+    [Header("Tower statistics")]
+    [SerializeField] private float fireRate;
+    [SerializeField] private float damage;
+    [SerializeField] private int cost;
 
+    
+
+    private List<Enemy> targets = new List<Enemy>();
 
     #region protected
     protected override int Steps {
@@ -82,6 +95,10 @@ public class SingleTargetTower : Tower {
             cost = value;
         }
     }
+
+    
+
+
     #endregion
 
 
@@ -89,12 +106,11 @@ public class SingleTargetTower : Tower {
     private void Start() {
         base.drawCircle(steps, range, lineRenderer, drawHeight);
         base.initialize(targetCollider, range, drawHeight);
-
-        targets = new List<Enemy>();
         StartCoroutine(attack());
     }
 
     private void Update() {
+        
     }
 
     protected override IEnumerator attack() {

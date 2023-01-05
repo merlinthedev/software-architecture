@@ -1,15 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EndpointManager : MonoBehaviour {
-
-    private GameManager gm;
-
-    private void Start() {
-        gm = GameManager.getInstance();
-    }
-
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Enemy")) {
@@ -17,8 +11,9 @@ public class EndpointManager : MonoBehaviour {
             EnemyManager.getInstance().getEnemyMap().TryGetValue(other, out hit);
             EnemyManager.getInstance().removeFromList(hit);
             EnemyManager.getInstance().removeFromMap(hit.getCollider());
-            gm.takeGlobalDamage(hit.Value);
+            GameManager.getInstance().takeGlobalDamage(hit.Value);
             Destroy(hit.gameObject);
+
         }
     }
 

@@ -6,8 +6,4 @@ using UnityEngine;
 [Serializable]
 public class Wave {
     public List<Enemy> enemies = new List<Enemy>();
-
-    private void Start() {
-        
-    }
 }

@@ -1,4 +1,6 @@
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour {
     [SerializeField] private int health;
@@ -6,9 +8,13 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private int waveNumber;
 
     [SerializeField] private bool gameOver = false;
+    [SerializeField] private bool gameWon = false;
+    [SerializeField] private bool buildingPhase = true;
 
 
     private static GameManager instance;
+
+    public UnityEvent onGameEnd;
 
     private void Awake() {
         if (instance == null) {
@@ -16,8 +22,17 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    private void Start() {
+        onGameEnd = new UnityEvent();
+        //onGameEnd.AddListener()
+    }
+
     private void Update() {
-        
+        if (gameOver) {
+            //onGameEnd.Invoke(
+            //        gameWon ? "You won!" : "You lost!");
+            Time.timeScale = 0;
+        }
     }
 
     public void takeGlobalDamage(int damage) {
@@ -33,7 +48,7 @@ public class GameManager : MonoBehaviour {
         EnemyManager.getInstance().getEnemyList().ForEach(enemy => {
             enemy.MovementSpeed = 0;
         });
-        gameOver = false;
+        gameOver = true;
     }
 
     public int getMoney() {
@@ -66,17 +81,26 @@ public class GameManager : MonoBehaviour {
         return instance;
     }
 
+
+    public bool isBuildingPhase() {
+        return this.buildingPhase;
+    }
+
+    public void setBuildingPhase(bool value) {
+        this.buildingPhase = value;
+    }
+
     public bool isGameOver() {
-        return gameOver;
+        return this.gameOver;
     }
 
-    public void setGameOver(bool value) {
-        gameOver = value;
+    public void setGameWon(bool value) {
+        this.gameOver = true;
+        this.gameWon = value;
     }
 
-    
-
-
-
+    public bool isGameWon() {
+        return this.gameWon;
+    }
 
 }

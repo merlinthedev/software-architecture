@@ -218,9 +218,19 @@ MonoBehaviour:
   lineRenderer: {fileID: 634517303823108305}
   targetCollider: {fileID: 634517303823108304}
   drawHeight: 0
-  fireRate: 3
+  fireRate: 0.2
   damage: 0.5
   cost: 20
+  upgrades:
+  - upgradeType: 0
+    currentLevel: 0
+    maxLevel: 3
+  - upgradeType: 1
+    currentLevel: 0
+    maxLevel: 3
+  - upgradeType: 2
+    currentLevel: 0
+    maxLevel: 3
 --- !u!1 &3981177525359238148
 GameObject:
   m_ObjectHideFlags: 0

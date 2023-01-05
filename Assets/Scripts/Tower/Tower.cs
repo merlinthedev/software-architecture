@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Tower : MonoBehaviour {
 
+
     protected abstract int Steps { get; set; }
     protected abstract float Range { get; set; }
     protected abstract LineRenderer LineRenderer { get; }

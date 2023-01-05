@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using UnityEngine;
 
 public class DebuffTower : Tower {
@@ -16,6 +17,9 @@ public class DebuffTower : Tower {
     [SerializeField] private float fireRate;
     [SerializeField] private float damage;
     [SerializeField] private int cost;
+
+    
+    private List<Enemy> targets = new List<Enemy>();
 
     #region protected
     protected override int Steps {
@@ -84,9 +88,10 @@ public class DebuffTower : Tower {
         }
     }
 
+    
+
     #endregion
 
-    private List<Enemy> targets = new List<Enemy>();
 
 
     void Start() {
@@ -105,7 +110,6 @@ public class DebuffTower : Tower {
             if (targets.Count > 0) {
                 foreach (Enemy enemy in targets.ToList()) {
                     if (enemy.isAlive()) {
-                        Debug.Log("Enemy is taking damage from debuff tower");
                         enemy.takeDamage(damage, Enemy.DamageType.DEBUFF);
                     } else {
                         targets.Remove(enemy);

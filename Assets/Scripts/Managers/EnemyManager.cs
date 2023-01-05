@@ -6,17 +6,15 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour {
 
     [Header("Spawning")]
-    [SerializeField] private float spawnRate;
+    [SerializeField] private int waveDelay;
+    [SerializeField] private int spawnRate;
     [SerializeField] private Enemy enemy;
     [SerializeField] private Transform spawnerPosition;
-    [SerializeField] private int maxEnemies;
-    [SerializeField] private int enemiesSpawned;
+    [SerializeField] private Transform endpointTransform;
     [SerializeField] private bool shouldSpawn = true;
 
 
-    [SerializeField] private Transform endpointTransform;
 
-    [SerializeField] private int waveDelay;
 
     public List<Wave> waveContents;
 
@@ -34,25 +32,24 @@ public class EnemyManager : MonoBehaviour {
 
         // Wait 10 seconds before starting to spawn enemies
 
-        if (shouldSpawn) Invoke("startSpawn", 10f);
+        if (shouldSpawn) Invoke("startSpawn", waveDelay);
     }
 
-    private void startSpawn() { 
+    private void startSpawn() {
         StartCoroutine(spawnEnemy());
     }
 
     IEnumerator spawnEnemy() {
         while (!GameManager.getInstance().isGameOver()) {
             foreach (Wave wave in waveContents) {
+                GameManager.getInstance().setBuildingPhase(false);
                 Debug.LogWarning("Wave: " + (waveContents.IndexOf(wave) + 1));
                 GameManager.getInstance().setWave(waveContents.IndexOf(wave) + 1);
-                // enemiesSpawned = 0;
                 foreach (Enemy enemy in wave.enemies) {
                     Enemy returned = Instantiate(enemy, spawnerPosition.position, Quaternion.identity);
                     enemyMap.Add(returned.getCollider(), returned);
                     enemyList.Add(returned);
                     returned.setDestinationTransform(endpointTransform);
-                    // enemiesSpawned++;
                     yield return new WaitForSeconds(spawnRate);
                 }
 
@@ -61,11 +58,15 @@ public class EnemyManager : MonoBehaviour {
                     yield return null;
                 }
 
+                if (waveContents.IndexOf(wave) + 1 == waveContents.Count) {
+                    GameManager.getInstance().setGameWon(true);
+                    yield break;
+                }
+
                 Debug.LogWarning("All enemies have been destroyed, starting " + waveDelay + " second cooldown");
-
+                GameManager.getInstance().setBuildingPhase(true);
+                
                 yield return new WaitForSeconds(waveDelay);
-
-
 
             }
         }
@@ -97,5 +98,11 @@ public class EnemyManager : MonoBehaviour {
 
     public static EnemyManager getInstance() {
         return instance;
+    }
+
+    public void fullEnemyRemove(Collider collider) {
+        removeFromList(getEnemyFromMap(collider));
+        removeFromMap(collider);
+        
     }
 }

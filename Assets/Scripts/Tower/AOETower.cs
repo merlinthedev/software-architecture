@@ -5,20 +5,21 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 class AOETower : Tower {
+    [Header("Range indication")]
     [SerializeField] private int steps;
-
     [SerializeField] private float range;
-    [SerializeField] private float damage;
-    [SerializeField] private int cost;
-    [SerializeField] private float fireRate;
-
-    [SerializeField] private float drawHeight;
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private SphereCollider targetCollider;
+    [SerializeField] private float drawHeight;
+
+    [Header("Tower statistics")]
+    [SerializeField] private float fireRate;
+    [SerializeField] private float damage;
+    [SerializeField] private int cost;
 
 
 
-    public List<Enemy> targets = new List<Enemy>();
+    private List<Enemy> targets = new List<Enemy>();
 
     #region protected
     protected override int Steps {
@@ -87,6 +88,8 @@ class AOETower : Tower {
         }
     }
 
+    
+
 
     #endregion
 
@@ -113,7 +116,7 @@ class AOETower : Tower {
             }
         }
     }
-
+    
 
     protected override IEnumerator attack() {
         while (true) {
