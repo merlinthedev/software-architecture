@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
@@ -10,7 +7,6 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] private bool gameOver = false;
 
-    private bool updated = false;
 
     private static GameManager instance;
 
@@ -21,7 +17,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Update() {
-        if (updated) updated = false;
+        
     }
 
     public void takeGlobalDamage(int damage) {
@@ -46,20 +42,20 @@ public class GameManager : MonoBehaviour {
 
     public void addMoney(int value) {
         this.money += value;
-        updated = true;
     }
 
+    public void removeMoney(int value) {
+        this.money -= value;
+    }
     public int getWaveNumber() {
         return this.waveNumber;
     }
     public void setWave(int value) {
         this.waveNumber = value;
-        updated = true;
     }
 
     public void setHealth(int value) {
         this.health = value;
-        updated = true;
     }
 
     public int getHealth() {
@@ -76,12 +72,9 @@ public class GameManager : MonoBehaviour {
 
     public void setGameOver(bool value) {
         gameOver = value;
-        updated = true;
     }
 
-    public bool isUpdated() {
-        return this.updated;
-    }
+    
 
 
 

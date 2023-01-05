@@ -22,6 +22,8 @@ public class Enemy : MonoBehaviour, IEnemy {
     private Vector3 lastPosition;
     private float distanceTraveled;
 
+    private float baseMovementSpeed;
+
 
     #region Properties
     public float MovementSpeed {
@@ -61,6 +63,7 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     private void Start() {
         agent.speed = movementSpeed;
+        baseMovementSpeed = movementSpeed;
     }
 
     private void Update() {
@@ -83,6 +86,8 @@ public class Enemy : MonoBehaviour, IEnemy {
         //        pointer++;
         //    }
         //}
+
+        agent.speed = movementSpeed;
 
         agent.destination = endpointTransform.transform.position;
     }
@@ -135,8 +140,20 @@ public class Enemy : MonoBehaviour, IEnemy {
         return this.distanceTraveled;
     }
 
+    public float getBaseMovementSpeed() {
+        return this.baseMovementSpeed;
+    }
+
+    public NavMeshAgent getAgent() {
+        return this.agent;
+    }
+
     public void setWaypointList(List<GameObject> waypoints) {
         this.waypoints = waypoints;
+    }
+
+    public void setDebuffed(bool value) {
+        this.debuffed = value;
     }
 
     public Collider getCollider() {

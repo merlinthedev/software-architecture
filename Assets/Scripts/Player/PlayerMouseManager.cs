@@ -13,6 +13,7 @@ public class PlayerMouseManager : MonoBehaviour {
 
 
     private GameObject selectedTower = null;
+    private Tile selectedTile = null;
 
     private bool isHovering = false;
 
@@ -43,22 +44,40 @@ public class PlayerMouseManager : MonoBehaviour {
         foreach (RaycastHit hit in hits) {
             if (hit.collider.gameObject.tag == "Tile") {
                 Debug.Log("Tile hit");
-                placeTower(hit.transform);
+                selectedTile = hit.collider.gameObject.GetComponent<Tile>();
+                if (selectedTile.isOccupied()) {
+                    Debug.LogWarning("This tile is already occupied");
+                    return;
+                }
+                placeTower(hit.transform, selectedTile);
             } else {
                 Debug.Log("Instead of tile we hit: " + hit.collider.name);
             }
         }
     }
 
-    private void placeTower(Transform tilePosition) {
+    private void placeTower(Transform tilePosition, Tile tile) {
         selectedTower.transform.position = tilePosition.position;
         selectedTower.transform.position = new Vector3(selectedTower.transform.position.x, selectedTower.transform.position.y + 0.8f, selectedTower.transform.position.z);
+
+        // Do this but without GetComponent
+        GameManager.getInstance().removeMoney(selectedTower.GetComponent<Tower>().Cost);
+        Debug.Log("Removed money");
+
+
         selectedTower = null;
         isHovering = false;
+        tile.setOccupied(true);
 
     }
 
     public void dragTower(GameObject obj) {
+        // Do this but without GetComponent
+        if (GameManager.getInstance().getMoney() < obj.GetComponent<Tower>().Cost) {
+            Debug.Log("Not enough money");
+            return;
+        }
+
         Debug.Log("Initiating tower drag mechanic");
         isHovering = true;
         selectedTower = Instantiate(obj);

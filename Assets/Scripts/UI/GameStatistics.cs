@@ -13,14 +13,14 @@ public class GameStatistics : MonoBehaviour {
 
     private void Start() {
         gameManager = GameManager.getInstance();
+        Debug.Log("Received instance");
     }
 
     private void Update() {
-        if (gameManager.isUpdated()) {
-            scoreText.SetText("Money: " + gameManager.getMoney() +
-                " \nHealth: " + gameManager.getHealth() +
-                " \nWave: " + gameManager.getWaveNumber());
-        }
+        // Events
+        scoreText.SetText("Money: " + gameManager.getMoney() +
+            " \nHealth: " + gameManager.getHealth() +
+            " \nWave: " + gameManager.getWaveNumber());
     }
 
 

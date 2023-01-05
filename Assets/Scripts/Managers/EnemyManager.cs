@@ -32,8 +32,13 @@ public class EnemyManager : MonoBehaviour {
     private void Start() {
         enemyList = new List<Enemy>();
 
+        // Wait 10 seconds before starting to spawn enemies
 
-        if (shouldSpawn) StartCoroutine(spawnEnemy());
+        if (shouldSpawn) Invoke("startSpawn", 10f);
+    }
+
+    private void startSpawn() { 
+        StartCoroutine(spawnEnemy());
     }
 
     IEnumerator spawnEnemy() {

@@ -127,6 +127,9 @@ public class DebuffTower : Tower {
         if (other.CompareTag("Enemy")) {
             var enemy = EnemyManager.getInstance().getEnemyFromMap(other);
             if (targets.Contains(enemy)) {
+                enemy.MovementSpeed = enemy.getBaseMovementSpeed();
+                enemy.getAgent().speed = enemy.getBaseMovementSpeed();
+                enemy.setDebuffed(false);
                 targets.Remove(enemy);
             }
         }
