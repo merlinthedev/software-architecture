@@ -3,8 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
-{
+public class EnemyManager : MonoBehaviour {
 
     [Header("Spawning")]
     [SerializeField] private float spawnRate;
@@ -12,6 +11,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private Transform spawnerPosition;
     [SerializeField] private int maxEnemies;
     [SerializeField] private int enemiesSpawned;
+    [SerializeField] private bool shouldSpawn = true;
 
 
     [SerializeField] private Transform endpointTransform;
@@ -25,30 +25,24 @@ public class EnemyManager : MonoBehaviour
 
     private static EnemyManager instance;
 
-    private void Awake()
-    {
+    private void Awake() {
         if (instance == null) instance = this;
     }
 
-    private void Start()
-    {
+    private void Start() {
         enemyList = new List<Enemy>();
 
 
-        StartCoroutine(spawnEnemy());
+        if (shouldSpawn) StartCoroutine(spawnEnemy());
     }
 
-    IEnumerator spawnEnemy()
-    {
-        while (!GameManager.getInstance().isGameOver())
-        {
-            foreach (Wave wave in waveContents)
-            {
+    IEnumerator spawnEnemy() {
+        while (!GameManager.getInstance().isGameOver()) {
+            foreach (Wave wave in waveContents) {
                 Debug.LogWarning("Wave: " + (waveContents.IndexOf(wave) + 1));
                 GameManager.getInstance().setWave(waveContents.IndexOf(wave) + 1);
                 // enemiesSpawned = 0;
-                foreach (Enemy enemy in wave.enemies)
-                {
+                foreach (Enemy enemy in wave.enemies) {
                     Enemy returned = Instantiate(enemy, spawnerPosition.position, Quaternion.identity);
                     enemyMap.Add(returned.getCollider(), returned);
                     enemyList.Add(returned);
@@ -58,8 +52,7 @@ public class EnemyManager : MonoBehaviour
                 }
 
                 // Wait for enemyList to be empty then start cooldown
-                while (enemyList.Count > 0)
-                {
+                while (enemyList.Count > 0) {
                     yield return null;
                 }
 
@@ -75,35 +68,29 @@ public class EnemyManager : MonoBehaviour
     }
 
 
-    public void removeFromList(Enemy enemy)
-    {
+    public void removeFromList(Enemy enemy) {
         this.enemyList.Remove(enemy);
     }
 
-    public Dictionary<Collider, Enemy> getEnemyMap()
-    {
+    public Dictionary<Collider, Enemy> getEnemyMap() {
         return this.enemyMap;
     }
 
-    public List<Enemy> getEnemyList()
-    {
+    public List<Enemy> getEnemyList() {
         return this.enemyList;
 
     }
 
 
-    public Enemy getEnemyFromMap(Collider collider)
-    {
+    public Enemy getEnemyFromMap(Collider collider) {
         return this.enemyMap[collider];
     }
 
-    public void removeFromMap(Collider collider)
-    {
+    public void removeFromMap(Collider collider) {
         this.enemyMap.Remove(collider);
     }
 
-    public static EnemyManager getInstance()
-    {
+    public static EnemyManager getInstance() {
         return instance;
     }
 }
