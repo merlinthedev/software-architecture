@@ -1,10 +1,4 @@
-using Newtonsoft.Json.Bson;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerMouseManager : MonoBehaviour {
 
@@ -12,6 +6,7 @@ public class PlayerMouseManager : MonoBehaviour {
     [SerializeField] private Camera mainCamera;
 
 
+    private GameObject towerToDrag = null;
     private GameObject selectedTower = null;
 
     private bool isHovering = false;
@@ -22,25 +17,33 @@ public class PlayerMouseManager : MonoBehaviour {
 
 
     private void Update() {
-        if (isHovering && selectedTower != null) {
-            
+        if (isHovering && towerToDrag != null) {
+
             Vector3 mousePosition = Input.mousePosition;
             mousePosition.z = 50f;
-            selectedTower.transform.position = mainCamera.ScreenToWorldPoint(mousePosition);
+            towerToDrag.transform.position = mainCamera.ScreenToWorldPoint(mousePosition);
 
             startHover();
 
             if (Input.GetMouseButtonDown(0)) {
-                Debug.Log("Mouse button down");
+                // Debug.Log("Mouse button down");
                 placeTower(getTileAtMouse());
             }
 
             if (Input.GetMouseButtonDown(1)) {
-                Debug.Log("Mouse button down");
-                Destroy(selectedTower);
-                selectedTower = null;
+                // Debug.Log("Mouse button down");
+                Destroy(towerToDrag);
+                towerToDrag = null;
             }
 
+        } else {
+            if (Input.GetMouseButtonDown(0)) {
+                Debug.Log("Clicked mouse when we were not hovering");
+                clickTower();
+
+                // Pass tower to UI element to display the tower's upgrades
+
+            }
         }
 
 
@@ -49,18 +52,20 @@ public class PlayerMouseManager : MonoBehaviour {
     private Tile getTileAtMouse() {
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] hits = Physics.RaycastAll(ray);
+
+        // use for loop for better performance
         foreach (RaycastHit hit in hits) {
             if (hit.collider.gameObject.tag == "Tile") {
-                Debug.Log("Tile hit");
+                // Debug.Log("Tile hit");
                 Tile selectedTile = hit.collider.gameObject.GetComponent<Tile>();
                 if (!selectedTile.isOccupied()) {
-                    Debug.LogWarning("Tile is not occupied");
+                    // Debug.LogWarning("Tile is not occupied");
                     return selectedTile;
                 } else {
-                    Debug.LogError("This tile is already occupied");
+                    // Debug.LogError("This tile is already occupied");
                     return null;
                 }
-            } 
+            }
         }
 
         return null;
@@ -68,21 +73,22 @@ public class PlayerMouseManager : MonoBehaviour {
 
     private void placeTower(Tile tile) {
         if (tile == null) {
-            Destroy(selectedTower);
-            selectedTower = null;
+            Destroy(towerToDrag);
+            towerToDrag = null;
             isHovering = false;
             return;
         }
 
-        selectedTower.transform.position = tile.transform.position;
-        selectedTower.transform.position = new Vector3(selectedTower.transform.position.x, selectedTower.transform.position.y + 0.8f, selectedTower.transform.position.z);
+        towerToDrag.transform.position = tile.transform.position;
+        towerToDrag.transform.position = new Vector3(towerToDrag.transform.position.x, towerToDrag.transform.position.y + 0.8f, towerToDrag.transform.position.z);
 
-        // Do this but without GetComponent
-        GameManager.getInstance().removeMoney(selectedTower.GetComponent<Tower>().Cost);
-        Debug.Log("Removed money");
+        // Do this but without GetComponent 
+        // Also do this but with events?
+        GameManager.getInstance().removeMoney(towerToDrag.GetComponent<Tower>().Cost);
+        // Debug.Log("Removed money");
 
 
-        selectedTower = null;
+        towerToDrag = null;
         isHovering = false;
 
         tile.setOccupied(true);
@@ -111,10 +117,25 @@ public class PlayerMouseManager : MonoBehaviour {
 
         Debug.Log("Initiating tower drag mechanic");
         isHovering = true;
-        selectedTower = Instantiate(obj);
+        towerToDrag = Instantiate(obj);
 
     }
 
 
+
+    private void clickTower() {
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] hits = Physics.RaycastAll(ray);
+
+        // use for loop for better performance
+        foreach (RaycastHit hit in hits) {
+            if (hit.collider.gameObject.tag == "Tower") {
+                Debug.Log("Tower hit");
+                selectedTower = hit.collider.gameObject;
+                return;
+            }
+        }
+        selectedTower = null;
+    }
 
 }

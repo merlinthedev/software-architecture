@@ -1,17 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+
 using UnityEngine;
 
 public class SingleTargetTower : Tower {
 
-    public Upgrade scriptableUpgradeAS;
-    public Upgrade scriptableUpgradeDMG;
-    public Upgrade scriptableUpgradeRANGE;
 
-    public int asLevel;
-    public int dmgLevel;
-    public int rangeLevel;
 
     [Header("Range indication")]
     [SerializeField] private int steps;
@@ -25,9 +20,11 @@ public class SingleTargetTower : Tower {
     [SerializeField] private float damage;
     [SerializeField] private int cost;
 
-    
+
+    [SerializeField] private List<ScriptableObject> upgrades = new List<ScriptableObject>();
 
     private List<Enemy> targets = new List<Enemy>();
+
 
     #region protected
     protected override int Steps {
@@ -96,7 +93,7 @@ public class SingleTargetTower : Tower {
         }
     }
 
-    
+
 
 
     #endregion
@@ -110,7 +107,7 @@ public class SingleTargetTower : Tower {
     }
 
     private void Update() {
-        
+
     }
 
     protected override IEnumerator attack() {
@@ -120,6 +117,7 @@ public class SingleTargetTower : Tower {
                     targets[0].takeDamage(damage, Enemy.DamageType.FLAT);
                 } else {
                     targets.RemoveAt(0);
+                    yield return null;
                 }
             }
             yield return new WaitForSeconds(fireRate);

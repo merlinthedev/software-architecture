@@ -16,11 +16,13 @@ public class GameStatistics : MonoBehaviour {
         Debug.Log("Received instance");
     }
 
-    private void Update() {
-        // Events
-        scoreText.SetText("Money: " + gameManager.getMoney() +
-            " \nHealth: " + gameManager.getHealth() +
-            " \nWave: " + gameManager.getWaveNumber());
+    public void updateText(int amount) {
+        Debug.Log("Updated text" + amount);
+
+        // scoreText.SetText("Money: " + gameManager.getMoney() +
+        //     " Health: " + gameManager.getHealth() +
+        //     " Wave: " + gameManager.getWaveNumber());
+        // scoreText.SetText("Money: " + amount);
     }
 
 

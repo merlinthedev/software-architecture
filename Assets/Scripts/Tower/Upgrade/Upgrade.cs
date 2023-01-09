@@ -5,8 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Upgrade", menuName = "ScriptableObjects/Upgrade")]
+[CreateAssetMenu(fileName = "Upgrade", menuName = "ScriptableObjects/Upgrades")]
 public class Upgrade : ScriptableObject {
-    public int cost;
-    public float multi;
+
+    [SerializeField] private new string name;
+    [SerializeField] private string id;
+    [SerializeField] private string description;
+    [SerializeField] private int cost;
+    [SerializeField] private float multiplier;
+
 }

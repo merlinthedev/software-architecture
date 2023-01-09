@@ -113,6 +113,7 @@ public class DebuffTower : Tower {
                         enemy.takeDamage(damage, Enemy.DamageType.DEBUFF);
                     } else {
                         targets.Remove(enemy);
+                        yield return null;
                     }
                 }
             }

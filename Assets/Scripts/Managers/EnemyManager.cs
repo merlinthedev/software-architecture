@@ -19,9 +19,18 @@ public class EnemyManager : MonoBehaviour {
     public List<Wave> waveContents;
 
     [SerializeField] private List<Enemy> enemyList;
-    private Dictionary<Collider, Enemy> enemyMap = new Dictionary<Collider, Enemy>();
+    [SerializeField] private Dictionary<Collider, Enemy> enemyMap = new Dictionary<Collider, Enemy>();
 
     private static EnemyManager instance;
+
+
+    private void OnEnable() {
+        EventBus<GlobalDamageEvent>.Subscribe(onGlobalDamage);
+    }
+
+    private void OnDisable() {
+        EventBus<GlobalDamageEvent>.Unsubscribe(onGlobalDamage);
+    }
 
     private void Awake() {
         if (instance == null) instance = this;
@@ -65,12 +74,16 @@ public class EnemyManager : MonoBehaviour {
 
                 Debug.LogWarning("All enemies have been destroyed, starting " + waveDelay + " second cooldown");
                 GameManager.getInstance().setBuildingPhase(true);
-                
+
                 yield return new WaitForSeconds(waveDelay);
 
             }
         }
 
+    }
+
+    private void onGlobalDamage(GlobalDamageEvent e) {
+        fullEnemyRemove(e.enemy.getCollider());
     }
 
 
@@ -100,9 +113,13 @@ public class EnemyManager : MonoBehaviour {
         return instance;
     }
 
-    public void fullEnemyRemove(Collider collider) {
+    private void fullEnemyRemove(Collider collider) {
+        // Debug.Log("Attempting to remove enemy from list and map with collider: " + collider.ToString());
         removeFromList(getEnemyFromMap(collider));
         removeFromMap(collider);
-        
+
+        Destroy(collider.gameObject);
+
+        // Debug.Log("Successfully removed enemy from list and map");
     }
 }

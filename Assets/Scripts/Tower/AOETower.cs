@@ -126,6 +126,7 @@ class AOETower : Tower {
                         enemy.takeDamage(damage, Enemy.DamageType.FLAT);
                     } else {
                         targets.Remove(enemy);
+                        yield return null;
                     }
                 }
             }

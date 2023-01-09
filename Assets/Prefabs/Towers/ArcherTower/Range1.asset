@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d8e97e7b431bfa448edf13f126c806c, type: 3}
-  m_Name: Upgrade
+  m_Name: Range1
   m_EditorClassIdentifier: 
+  name: Increased Range
+  id: r_1
+  description: Increases the range of the tower
   cost: 100
-  level: 1
-  multi: 2
+  multiplier: 1.2

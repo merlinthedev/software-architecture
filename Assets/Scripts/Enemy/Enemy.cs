@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -66,10 +67,9 @@ public class Enemy : MonoBehaviour, IEnemy {
         }
     }
 
-    
+
     #endregion
 
-    private List<GameObject> waypoints;
     private int pointer;
 
     private void Start() {
@@ -99,7 +99,6 @@ public class Enemy : MonoBehaviour, IEnemy {
         //}
 
         agent.speed = movementSpeed;
-
         agent.destination = endpointTransform.transform.position;
     }
 
@@ -159,9 +158,6 @@ public class Enemy : MonoBehaviour, IEnemy {
         return this.agent;
     }
 
-    public void setWaypointList(List<GameObject> waypoints) {
-        this.waypoints = waypoints;
-    }
 
     public void setDebuffed(bool value) {
         this.debuffed = value;

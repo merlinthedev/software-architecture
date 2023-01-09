@@ -1,4 +1,5 @@
 using Unity.VisualScripting.Dependencies.NCalc;
+
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,7 +15,15 @@ public class GameManager : MonoBehaviour {
 
     private static GameManager instance;
 
-    public UnityEvent onGameEnd;
+
+    private void OnEnable() {
+        EventBus<GlobalDamageEvent>.Subscribe(onGlobalDamage);
+    }
+
+    private void OnDisable() {
+        EventBus<GlobalDamageEvent>.Unsubscribe(onGlobalDamage);
+    }
+
 
     private void Awake() {
         if (instance == null) {
@@ -23,25 +32,29 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
-        onGameEnd = new UnityEvent();
-        //onGameEnd.AddListener()
     }
 
     private void Update() {
         if (gameOver) {
-            //onGameEnd.Invoke(
-            //        gameWon ? "You won!" : "You lost!");
+            // Do text stuff
             Time.timeScale = 0;
         }
     }
 
     public void takeGlobalDamage(int damage) {
-        if (this.health - damage <= 0) {
+        setHealth(this.health -= damage);
+
+        if (this.health <= 0) {
             globalDeath();
             setHealth(0);
-            return;
         }
-        setHealth(this.health -= damage);
+
+
+    }
+
+    private void onGlobalDamage(GlobalDamageEvent e) {
+        Debug.Log("Global Damage: " + e.enemy.Value);
+        takeGlobalDamage(e.enemy.Value);
     }
 
     private void globalDeath() {
@@ -80,7 +93,6 @@ public class GameManager : MonoBehaviour {
     public static GameManager getInstance() {
         return instance;
     }
-
 
     public bool isBuildingPhase() {
         return this.buildingPhase;
