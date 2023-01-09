@@ -18,10 +18,12 @@ public class GameManager : MonoBehaviour {
 
     private void OnEnable() {
         EventBus<GlobalDamageEvent>.Subscribe(onGlobalDamage);
+        EventBus<EnemyKilledEvent>.Subscribe(onEnemyKilled);
     }
 
     private void OnDisable() {
         EventBus<GlobalDamageEvent>.Unsubscribe(onGlobalDamage);
+        EventBus<EnemyKilledEvent>.Unsubscribe(onEnemyKilled);
     }
 
 
@@ -49,12 +51,17 @@ public class GameManager : MonoBehaviour {
             setHealth(0);
         }
 
-
+        EventBus<UpdateHealthEvent>.Raise(new UpdateHealthEvent(this.getHealth()));
     }
 
     private void onGlobalDamage(GlobalDamageEvent e) {
         Debug.Log("Global Damage: " + e.enemy.Value);
         takeGlobalDamage(e.enemy.Value);
+    }
+
+    private void onEnemyKilled(EnemyKilledEvent e) {
+        addMoney(e.enemy.Value);
+        EventBus<UpdateMoneyEvent>.Raise(new UpdateMoneyEvent(this.getMoney()));
     }
 
     private void globalDeath() {

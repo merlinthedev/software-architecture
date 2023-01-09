@@ -26,10 +26,13 @@ public class EnemyManager : MonoBehaviour {
 
     private void OnEnable() {
         EventBus<GlobalDamageEvent>.Subscribe(onGlobalDamage);
+        EventBus<EnemyKilledEvent>.Subscribe(onEnemyKilled);
     }
 
     private void OnDisable() {
         EventBus<GlobalDamageEvent>.Unsubscribe(onGlobalDamage);
+        EventBus<EnemyKilledEvent>.Unsubscribe(onEnemyKilled);
+
     }
 
     private void Awake() {
@@ -52,8 +55,9 @@ public class EnemyManager : MonoBehaviour {
         while (!GameManager.getInstance().isGameOver()) {
             foreach (Wave wave in waveContents) {
                 GameManager.getInstance().setBuildingPhase(false);
-                Debug.LogWarning("Wave: " + (waveContents.IndexOf(wave) + 1));
                 GameManager.getInstance().setWave(waveContents.IndexOf(wave) + 1);
+                Debug.LogWarning("Wave: " + GameManager.getInstance().getWaveNumber());
+                EventBus<UpdateWaveEvent>.Raise(new UpdateWaveEvent(GameManager.getInstance().getWaveNumber()));
                 foreach (Enemy enemy in wave.enemies) {
                     Enemy returned = Instantiate(enemy, spawnerPosition.position, Quaternion.identity);
                     enemyMap.Add(returned.getCollider(), returned);
@@ -83,6 +87,10 @@ public class EnemyManager : MonoBehaviour {
     }
 
     private void onGlobalDamage(GlobalDamageEvent e) {
+        fullEnemyRemove(e.enemy.getCollider());
+    }
+
+    private void onEnemyKilled(EnemyKilledEvent e) {
         fullEnemyRemove(e.enemy.getCollider());
     }
 

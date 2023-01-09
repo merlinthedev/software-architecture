@@ -135,15 +135,7 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     private void die() {
         this.alive = false;
-
-        // Global wallet object?
-        GameManager.getInstance().addMoney(value);
-
-        // Events for removing from data structures?
-        EnemyManager.getInstance().removeFromList(this);
-        EnemyManager.getInstance().removeFromMap(enemyCollider);
-
-        Destroy(this.gameObject);
+        EventBus<EnemyKilledEvent>.Raise(new EnemyKilledEvent(this));
     }
 
     public float getDistanceTraveled() {

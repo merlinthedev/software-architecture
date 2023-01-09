@@ -35,7 +35,6 @@ public class EnemyKilledEvent : Event {
 
 }
 
-
 public class TowerPlacedEvent : Event {
 
     public Tower tower;
@@ -44,4 +43,31 @@ public class TowerPlacedEvent : Event {
         this.tower = tower;
     }
 
+}
+
+public class UpdateHealthEvent : Event {
+
+    public int health;
+
+    public UpdateHealthEvent(int health) {
+        this.health = health;
+    }
+}
+
+public class UpdateMoneyEvent : Event {
+
+    public int money;
+
+    public UpdateMoneyEvent(int money) {
+        this.money = money;
+    }
+}
+
+public class UpdateWaveEvent : Event {
+
+    public int wave;
+
+    public UpdateWaveEvent(int wave) {
+        this.wave = wave;
+    }
 }

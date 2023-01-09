@@ -13988,7 +13988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4700b2ab170be4c42b977cbfa32e92a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveDelay: 1
+  waveDelay: 5
   spawnRate: 2
   enemy: {fileID: 663528910021728088, guid: 6dec6df89622f5b41b5f0b32cbb052f7, type: 3}
   spawnerPosition: {fileID: 1492571442}
