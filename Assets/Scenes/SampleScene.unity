@@ -7312,7 +7312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  money: 10000
+  money: 60
   waveNumber: 0
   gameOver: 0
   gameWon: 0
