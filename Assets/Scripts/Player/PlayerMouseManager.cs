@@ -129,13 +129,25 @@ public class PlayerMouseManager : MonoBehaviour {
 
         // use for loop for better performance
         foreach (RaycastHit hit in hits) {
-            if (hit.collider.gameObject.tag == "Tower") {
+            // if (hit.collider.gameObject.tag == "Tower") {
+            //     Debug.Log("Tower hit");
+            //     selectedTower = hit.collider.gameObject;
+            //     EventBus<TowerSelectedEvent>.Raise(new TowerSelectedEvent(selectedTower.GetComponent<Tower>()));
+            //     return;
+            // }
+
+            if (hit.collider.GetType() == typeof(BoxCollider) && hit.collider.gameObject.CompareTag("Tower")) {
                 Debug.Log("Tower hit");
                 selectedTower = hit.collider.gameObject;
+                EventBus<TowerSelectedEvent>.Raise(new TowerSelectedEvent(selectedTower.GetComponent<Tower>()));
                 return;
             }
         }
+
         selectedTower = null;
+        EventBus<TowerUnselectEvent>.Raise(new TowerUnselectEvent(true));
+        Debug.Log("We hit nothing, setting tower to null");
+
     }
 
 }

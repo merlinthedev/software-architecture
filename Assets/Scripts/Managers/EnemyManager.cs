@@ -27,11 +27,13 @@ public class EnemyManager : MonoBehaviour {
     private void OnEnable() {
         EventBus<GlobalDamageEvent>.Subscribe(onGlobalDamage);
         EventBus<EnemyKilledEvent>.Subscribe(onEnemyKilled);
+        EventBus<GameIsOverEvent>.Subscribe(onGameOver);
     }
 
     private void OnDisable() {
         EventBus<GlobalDamageEvent>.Unsubscribe(onGlobalDamage);
         EventBus<EnemyKilledEvent>.Unsubscribe(onEnemyKilled);
+        EventBus<GameIsOverEvent>.Unsubscribe(onGameOver);
 
     }
 
@@ -72,7 +74,8 @@ public class EnemyManager : MonoBehaviour {
                 }
 
                 if (waveContents.IndexOf(wave) + 1 == waveContents.Count) {
-                    GameManager.getInstance().setGameWon(true);
+                    // GameManager.getInstance().setGameWon(true);
+                    EventBus<GameIsWonEvent>.Raise(new GameIsWonEvent(true));
                     yield break;
                 }
 
@@ -92,6 +95,14 @@ public class EnemyManager : MonoBehaviour {
 
     private void onEnemyKilled(EnemyKilledEvent e) {
         fullEnemyRemove(e.enemy.getCollider());
+    }
+
+    private void onGameOver(GameIsOverEvent e) {
+        if (e.isGameOver) {
+            for (int i = 0; i < enemyList.Count; i++) {
+                enemyList[i].MovementSpeed = 0;
+            }
+        }
     }
 
 

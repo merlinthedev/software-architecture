@@ -21,7 +21,13 @@ public class SingleTargetTower : Tower {
     [SerializeField] private int cost;
 
 
-    [SerializeField] private List<ScriptableObject> upgrades = new List<ScriptableObject>();
+    [Header("Upgrades")]
+    [SerializeField] private List<ScriptableObject> rangeUpgrades = new List<ScriptableObject>();
+    [SerializeField] private List<ScriptableObject> attackSpeedUpgrades = new List<ScriptableObject>();
+    [SerializeField] private List<ScriptableObject> damageUpgrades = new List<ScriptableObject>();
+
+
+    private Dictionary<string, List<ScriptableObject>> upgrades = new Dictionary<string, List<ScriptableObject>>();
 
     private List<Enemy> targets = new List<Enemy>();
 
@@ -101,6 +107,9 @@ public class SingleTargetTower : Tower {
 
 
     private void Start() {
+
+        initializeDictionary();
+
         base.drawCircle(steps, range, lineRenderer, drawHeight);
         base.initialize(targetCollider, range, drawHeight);
         StartCoroutine(attack());
@@ -122,6 +131,13 @@ public class SingleTargetTower : Tower {
             }
             yield return new WaitForSeconds(fireRate);
         }
+    }
+
+    private void initializeDictionary() {
+        // Add lists to map
+        upgrades.Add("Range", rangeUpgrades);
+        upgrades.Add("AS", attackSpeedUpgrades);
+        upgrades.Add("Damage", damageUpgrades);
     }
 
 

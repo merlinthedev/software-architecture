@@ -45,6 +45,26 @@ public class TowerPlacedEvent : Event {
 
 }
 
+public class TowerSelectedEvent : Event {
+
+    public Tower tower;
+
+    public TowerSelectedEvent(Tower tower) {
+        this.tower = tower;
+    }
+
+}
+
+public class TowerUnselectEvent : Event {
+
+    public bool isUnselected;
+
+    public TowerUnselectEvent(bool isUnselected) {
+        this.isUnselected = isUnselected;
+    }
+
+}
+
 public class UpdateHealthEvent : Event {
 
     public int health;
@@ -70,4 +90,24 @@ public class UpdateWaveEvent : Event {
     public UpdateWaveEvent(int wave) {
         this.wave = wave;
     }
+}
+
+public class GameIsWonEvent : Event {
+
+    public bool isWon;
+
+    public GameIsWonEvent(bool isWon) {
+        this.isWon = isWon;
+    }
+
+}
+
+public class GameIsOverEvent : Event {
+
+    public bool isGameOver;
+
+    public GameIsOverEvent(bool isGameOver) {
+        this.isGameOver = isGameOver;
+    }
+
 }

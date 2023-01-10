@@ -19,11 +19,13 @@ public class GameManager : MonoBehaviour {
     private void OnEnable() {
         EventBus<GlobalDamageEvent>.Subscribe(onGlobalDamage);
         EventBus<EnemyKilledEvent>.Subscribe(onEnemyKilled);
+        EventBus<GameIsWonEvent>.Subscribe(onGameWon);
     }
 
     private void OnDisable() {
         EventBus<GlobalDamageEvent>.Unsubscribe(onGlobalDamage);
         EventBus<EnemyKilledEvent>.Unsubscribe(onEnemyKilled);
+        EventBus<GameIsWonEvent>.Unsubscribe(onGameWon);
     }
 
 
@@ -43,7 +45,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void takeGlobalDamage(int damage) {
+    private void takeGlobalDamage(int damage) {
         setHealth(this.health -= damage);
 
         if (this.health <= 0) {
@@ -53,6 +55,13 @@ public class GameManager : MonoBehaviour {
 
         EventBus<UpdateHealthEvent>.Raise(new UpdateHealthEvent(this.getHealth()));
     }
+
+    private void onGameWon(GameIsWonEvent e) {
+        gameOver = true;
+        gameWon = e.isWon;
+
+    }
+
 
     private void onGlobalDamage(GlobalDamageEvent e) {
         Debug.Log("Global Damage: " + e.enemy.Value);
@@ -65,9 +74,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void globalDeath() {
-        EnemyManager.getInstance().getEnemyList().ForEach(enemy => {
-            enemy.MovementSpeed = 0;
-        });
+        EventBus<GameIsOverEvent>.Raise(new GameIsOverEvent(true));
         gameOver = true;
     }
 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4101407930031650665}
   - component: {fileID: 2238244492477023139}
   - component: {fileID: 634517303823108304}
+  - component: {fileID: 3068107672778462654}
   - component: {fileID: 634517303823108305}
   - component: {fileID: 634517303823108307}
   m_Layer: 0
@@ -102,6 +103,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &3068107672778462654
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292500818651701878}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.99999994, y: 1.4399998, z: 0.99999994}
+  m_Center: {x: 0, y: 0.7199999, z: 0}
 --- !u!120 &634517303823108305
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -221,16 +235,6 @@ MonoBehaviour:
   fireRate: 0.2
   damage: 0.5
   cost: 20
-  upgrades:
-  - upgradeType: 0
-    currentLevel: 0
-    maxLevel: 3
-  - upgradeType: 1
-    currentLevel: 0
-    maxLevel: 3
-  - upgradeType: 2
-    currentLevel: 0
-    maxLevel: 3
 --- !u!1 &3981177525359238148
 GameObject:
   m_ObjectHideFlags: 0

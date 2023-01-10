@@ -35,7 +35,7 @@ public class GameStatistics : MonoBehaviour {
         healthText = gameManager.getHealth();
         waveText = gameManager.getWaveNumber();
         updateText();
-        Debug.Log("Received instance");
+        // Debug.Log("Received instance");
     }
 
     private void onMoneyUpdate(UpdateMoneyEvent e) {
@@ -59,7 +59,6 @@ public class GameStatistics : MonoBehaviour {
         // scoreText.SetText("Money: " + gameManager.getMoney() +
         //     " Health: " + gameManager.getHealth() +
         //     " Wave: " + gameManager.getWaveNumber());
-        // scoreText.SetText("Money: " + amount);
         scoreText.SetText("Money:" + moneyText + " Health:" + healthText + " Wave:" + waveText);
         Debug.Log("Updated text");
     }

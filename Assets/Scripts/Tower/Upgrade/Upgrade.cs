@@ -13,5 +13,6 @@ public class Upgrade : ScriptableObject {
     [SerializeField] private string description;
     [SerializeField] private int cost;
     [SerializeField] private float multiplier;
+    [SerializeField] private Upgrade parent;
 
 }
