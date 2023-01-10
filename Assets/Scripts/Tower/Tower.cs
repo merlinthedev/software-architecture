@@ -19,6 +19,8 @@ public abstract class Tower : MonoBehaviour {
 
     protected abstract IEnumerator attack();
 
+    public abstract Upgrade getCurrentUpgradeLevel(string upgradeType);
+
     protected void initialize(SphereCollider targetCollider, float range, float drawHeight) {
         targetCollider.radius = range;
         targetCollider.center = new Vector3(0, drawHeight, 0);

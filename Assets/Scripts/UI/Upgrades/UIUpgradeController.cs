@@ -2,20 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIUpgradeController : MonoBehaviour {
 
+    [Header("Transform")]
     [SerializeField] private RectTransform rTransform;
+
+
+    private Tower tower;
 
 
     private void OnEnable() {
         EventBus<TowerSelectedEvent>.Subscribe(onTowerSelect);
-        EventBus<TowerUnselectEvent>.Subscribe(onTowerUnselect);
     }
 
     private void OnDisable() {
         EventBus<TowerSelectedEvent>.Unsubscribe(onTowerSelect);
-        EventBus<TowerUnselectEvent>.Unsubscribe(onTowerUnselect);
     }
 
     private void Start() {
@@ -24,18 +27,35 @@ public class UIUpgradeController : MonoBehaviour {
 
     private void onTowerSelect(TowerSelectedEvent e) {
         rTransform.transform.position = new Vector3(125, rTransform.transform.position.y, rTransform.transform.position.z);
-
-    }
-
-    private void onTowerUnselect(TowerUnselectEvent e) {
-        if(e.isUnselected) {
-            resetUI();
-        }
+        tower = e.tower;
     }
 
     private void resetUI() {
         rTransform.transform.position = new Vector3(-125, rTransform.transform.position.y, rTransform.transform.position.z);
+    }
 
+    public void rangeUpgrade() {
+        if (GameManager.enoughMoney(tower.getCurrentUpgradeLevel("Range").getCost())) {
+            EventBus<TowerUpgradeEvent>.Raise(new TowerUpgradeEvent("Range", tower));
+        }
+    }
+
+    public void attackSpeedUpgrade() {
+        if (GameManager.enoughMoney(tower.getCurrentUpgradeLevel("AS").getCost())) {
+            EventBus<TowerUpgradeEvent>.Raise(new TowerUpgradeEvent("AS", tower));
+        }
+    }
+
+    public void damageUpgrade() {
+        if (GameManager.enoughMoney(tower.getCurrentUpgradeLevel("Damage").getCost())) {
+            EventBus<TowerUpgradeEvent>.Raise(new TowerUpgradeEvent("Damage", tower));
+        }
+    }
+
+    public void closeMenu() {
+        resetUI();
+        tower = null;
+        EventBus<TowerUnselectEvent>.Raise(new TowerUnselectEvent(true));
     }
 
 }

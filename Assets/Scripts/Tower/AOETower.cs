@@ -134,6 +134,9 @@ class AOETower : Tower {
         }
     }
 
+    public override Upgrade getCurrentUpgradeLevel(string upgradeType) {
+        throw new System.NotImplementedException();
+    }
 
 }
 

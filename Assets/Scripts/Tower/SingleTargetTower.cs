@@ -22,12 +22,15 @@ public class SingleTargetTower : Tower {
 
 
     [Header("Upgrades")]
-    [SerializeField] private List<ScriptableObject> rangeUpgrades = new List<ScriptableObject>();
-    [SerializeField] private List<ScriptableObject> attackSpeedUpgrades = new List<ScriptableObject>();
-    [SerializeField] private List<ScriptableObject> damageUpgrades = new List<ScriptableObject>();
+    [SerializeField] private List<Upgrade> rangeUpgrades = new List<Upgrade>();
+    private int rangeLevel = -1;
+    [SerializeField] private List<Upgrade> attackSpeedUpgrades = new List<Upgrade>();
+    private int attackSpeedLevel = -1;
+    [SerializeField] private List<Upgrade> damageUpgrades = new List<Upgrade>();
+    private int damageLevel = -1;
 
 
-    private Dictionary<string, List<ScriptableObject>> upgrades = new Dictionary<string, List<ScriptableObject>>();
+    private Dictionary<string, List<Upgrade>> upgrades = new Dictionary<string, List<Upgrade>>();
 
     private List<Enemy> targets = new List<Enemy>();
 
@@ -158,6 +161,40 @@ public class SingleTargetTower : Tower {
         }
     }
 
+    public int getRangeLevel() {
+        return this.rangeLevel;
+    }
 
+    public int getAttackSpeedLevel() {
+        return this.attackSpeedLevel;
+    }
+
+    public int getDamageLevel() {
+        return this.damageLevel;
+    }
+
+    public override Upgrade getCurrentUpgradeLevel(string upgradeType) {
+        if (upgradeType == "Range") {
+            if (rangeLevel != -1) {
+                return upgrades[upgradeType][rangeLevel];
+            } else {
+                return null;
+            }
+        } else if (upgradeType == "AS") {
+            if (attackSpeedLevel != -1) {
+                return upgrades[upgradeType][attackSpeedLevel];
+            } else {
+                return null;
+            }
+        } else if (upgradeType == "Damage") {
+            if (damageLevel != -1) {
+                return upgrades[upgradeType][damageLevel];
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 
 }

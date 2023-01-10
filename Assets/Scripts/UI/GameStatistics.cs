@@ -54,6 +54,7 @@ public class GameStatistics : MonoBehaviour {
         updateText();
     }
 
+
     public void updateText() {
 
         // scoreText.SetText("Money: " + gameManager.getMoney() +

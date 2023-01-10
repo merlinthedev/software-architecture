@@ -65,6 +65,18 @@ public class TowerUnselectEvent : Event {
 
 }
 
+public class TowerUpgradeEvent: Event {
+
+    public string upgradeType;
+    public Tower tower;
+
+    public TowerUpgradeEvent(string upgradeType, Tower tower) {
+        this.upgradeType = upgradeType;
+        this.tower = tower;
+    }
+
+}
+
 public class UpdateHealthEvent : Event {
 
     public int health;

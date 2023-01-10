@@ -108,6 +108,10 @@ public class GameManager : MonoBehaviour {
         return instance;
     }
 
+    public static bool enoughMoney(int value) {
+        return instance.getMoney() >= value;
+    }
+
     public bool isBuildingPhase() {
         return this.buildingPhase;
     }

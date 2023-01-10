@@ -11,6 +11,14 @@ public class PlayerMouseManager : MonoBehaviour {
 
     private bool isHovering = false;
 
+    private void OnEnable() {
+        EventBus<TowerUnselectEvent>.Subscribe(onTowerUnselect);
+    }
+
+    private void OnDisable() {
+        EventBus<TowerUnselectEvent>.Unsubscribe(onTowerUnselect);
+    }
+
     private void Start() {
         Debug.Log("Camera main script start");
     }
@@ -121,6 +129,9 @@ public class PlayerMouseManager : MonoBehaviour {
 
     }
 
+    private void onTowerUnselect(TowerUnselectEvent e) {
+        selectedTower = null;
+    }
 
 
     private void clickTower() {
@@ -129,13 +140,6 @@ public class PlayerMouseManager : MonoBehaviour {
 
         // use for loop for better performance
         foreach (RaycastHit hit in hits) {
-            // if (hit.collider.gameObject.tag == "Tower") {
-            //     Debug.Log("Tower hit");
-            //     selectedTower = hit.collider.gameObject;
-            //     EventBus<TowerSelectedEvent>.Raise(new TowerSelectedEvent(selectedTower.GetComponent<Tower>()));
-            //     return;
-            // }
-
             if (hit.collider.GetType() == typeof(BoxCollider) && hit.collider.gameObject.CompareTag("Tower")) {
                 Debug.Log("Tower hit");
                 selectedTower = hit.collider.gameObject;
@@ -144,9 +148,6 @@ public class PlayerMouseManager : MonoBehaviour {
             }
         }
 
-        selectedTower = null;
-        EventBus<TowerUnselectEvent>.Raise(new TowerUnselectEvent(true));
-        Debug.Log("We hit nothing, setting tower to null");
 
     }
 

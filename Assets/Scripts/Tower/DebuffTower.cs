@@ -139,4 +139,8 @@ public class DebuffTower : Tower {
             }
         }
     }
+
+    public override Upgrade getCurrentUpgradeLevel(string upgradeType) {
+        throw new System.NotImplementedException();
+    }
 }
