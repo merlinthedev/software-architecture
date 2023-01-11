@@ -7,6 +7,7 @@ public class PlayerMouseManager : MonoBehaviour {
 
 
     private GameObject towerToDrag = null;
+    private Tower towerScript = null;
     private GameObject selectedTower = null;
 
     private bool isHovering = false;
@@ -46,7 +47,6 @@ public class PlayerMouseManager : MonoBehaviour {
 
         } else {
             if (Input.GetMouseButtonDown(0)) {
-                Debug.Log("Clicked mouse when we were not hovering");
                 clickTower();
 
                 // Pass tower to UI element to display the tower's upgrades
@@ -90,13 +90,19 @@ public class PlayerMouseManager : MonoBehaviour {
         towerToDrag.transform.position = tile.transform.position;
         towerToDrag.transform.position = new Vector3(towerToDrag.transform.position.x, towerToDrag.transform.position.y + 0.8f, towerToDrag.transform.position.z);
 
+        EventBus<TowerPlacedEvent>.Raise(new TowerPlacedEvent(towerScript));
+
         // Do this but without GetComponent 
         // Also do this but with events?
-        GameManager.getInstance().removeMoney(towerToDrag.GetComponent<Tower>().Cost);
+        // GameManager.getInstance().removeMoney(towerToDrag.GetComponent<Tower>().Cost);
+
+        EventBus<RemoveMoneyEvent>.Raise(new RemoveMoneyEvent(towerScript.Cost));
+
         // Debug.Log("Removed money");
 
 
         towerToDrag = null;
+        towerScript = null;
         isHovering = false;
 
         tile.setOccupied(true);
@@ -126,6 +132,8 @@ public class PlayerMouseManager : MonoBehaviour {
         Debug.Log("Initiating tower drag mechanic");
         isHovering = true;
         towerToDrag = Instantiate(obj);
+        towerScript = towerToDrag.GetComponent<Tower>();
+
 
     }
 

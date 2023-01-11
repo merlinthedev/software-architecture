@@ -19,6 +19,7 @@ class AOETower : Tower {
 
 
 
+
     private List<Enemy> targets = new List<Enemy>();
 
     #region protected
@@ -30,6 +31,7 @@ class AOETower : Tower {
             steps = value;
         }
     }
+
 
     protected override float Range {
         get {
@@ -93,12 +95,26 @@ class AOETower : Tower {
 
     #endregion
 
+    protected override void OnEnable() {
+        EventBus<TowerPlacedEvent>.Subscribe(onTowerPlaced);
+
+    }
+
+    protected override void OnDisable() {
+        EventBus<TowerPlacedEvent>.Unsubscribe(onTowerPlaced);
+    }
+
+    protected override void onTowerPlaced(TowerPlacedEvent e) {
+        if (e.tower == this) {
+            StartCoroutine(attack());
+        }
+    }
+
     private void Start() {
 
         base.drawCircle(steps, range, lineRenderer, drawHeight);
         base.initialize(targetCollider, range, drawHeight);
 
-        StartCoroutine(attack());
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -134,7 +150,7 @@ class AOETower : Tower {
         }
     }
 
-    public override Upgrade getCurrentUpgradeLevel(string upgradeType) {
+    public override Upgrade getNextUpgrade(string upgradeType) {
         throw new System.NotImplementedException();
     }
 

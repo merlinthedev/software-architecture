@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UISpriteController : MonoBehaviour {
+public class UITowerSpriteController : MonoBehaviour {
 
     [SerializeField] private Image spriteImage;
     [SerializeField] private Tower referenceTower;

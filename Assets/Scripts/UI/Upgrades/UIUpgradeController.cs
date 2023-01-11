@@ -35,21 +35,29 @@ public class UIUpgradeController : MonoBehaviour {
     }
 
     public void rangeUpgrade() {
-        if (GameManager.enoughMoney(tower.getCurrentUpgradeLevel("Range").getCost())) {
+        if (GameManager.enoughMoney(tower.getNextUpgrade("Range").getCost())) {
+            removeMoney(tower.getNextUpgrade("Range").getCost());
             EventBus<TowerUpgradeEvent>.Raise(new TowerUpgradeEvent("Range", tower));
         }
+
     }
 
     public void attackSpeedUpgrade() {
-        if (GameManager.enoughMoney(tower.getCurrentUpgradeLevel("AS").getCost())) {
+        if (GameManager.enoughMoney(tower.getNextUpgrade("AS").getCost())) {
+            removeMoney(tower.getNextUpgrade("AS").getCost());
             EventBus<TowerUpgradeEvent>.Raise(new TowerUpgradeEvent("AS", tower));
         }
     }
 
     public void damageUpgrade() {
-        if (GameManager.enoughMoney(tower.getCurrentUpgradeLevel("Damage").getCost())) {
+        if (GameManager.enoughMoney(tower.getNextUpgrade("Damage").getCost())) {
+            removeMoney(tower.getNextUpgrade("Damage").getCost());
             EventBus<TowerUpgradeEvent>.Raise(new TowerUpgradeEvent("Damage", tower));
         }
+    }
+
+    private void removeMoney(int value) {
+        EventBus<RemoveMoneyEvent>.Raise(new RemoveMoneyEvent(value));
     }
 
     public void closeMenu() {

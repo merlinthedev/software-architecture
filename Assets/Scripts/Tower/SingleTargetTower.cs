@@ -30,6 +30,8 @@ public class SingleTargetTower : Tower {
     private int damageLevel = -1;
 
 
+
+
     private Dictionary<string, List<Upgrade>> upgrades = new Dictionary<string, List<Upgrade>>();
 
     private List<Enemy> targets = new List<Enemy>();
@@ -108,6 +110,22 @@ public class SingleTargetTower : Tower {
     #endregion
 
 
+    protected override void OnEnable() {
+        EventBus<TowerUpgradeEvent>.Subscribe(onTowerUpgrade);
+        EventBus<TowerPlacedEvent>.Subscribe(onTowerPlaced);
+
+    }
+
+    protected override void OnDisable() {
+        EventBus<TowerUpgradeEvent>.Unsubscribe(onTowerUpgrade);
+        EventBus<TowerPlacedEvent>.Unsubscribe(onTowerPlaced);
+    }
+
+    protected override void onTowerPlaced(TowerPlacedEvent e) {
+        if (e.tower == this) {
+            StartCoroutine(attack());
+        }
+    }
 
     private void Start() {
 
@@ -115,7 +133,6 @@ public class SingleTargetTower : Tower {
 
         base.drawCircle(steps, range, lineRenderer, drawHeight);
         base.initialize(targetCollider, range, drawHeight);
-        StartCoroutine(attack());
     }
 
     private void Update() {
@@ -132,7 +149,7 @@ public class SingleTargetTower : Tower {
                     yield return null;
                 }
             }
-            yield return new WaitForSeconds(fireRate);
+            yield return new WaitForSeconds(0);
         }
     }
 
@@ -161,6 +178,42 @@ public class SingleTargetTower : Tower {
         }
     }
 
+    private void onTowerUpgrade(TowerUpgradeEvent e) {
+        if (e.tower == this) {
+            switch (e.upgradeType) {
+                case "Range":
+                    rangeLevel++;
+                    onRangeUpgrade();
+                    break;
+                case "AS":
+                    attackSpeedLevel++;
+                    onAttackSpeedUpgrade();
+                    break;
+                case "Damage":
+                    damageLevel++;
+                    onDamageUpgrade();
+                    break;
+            }
+        }
+    }
+
+    private void onRangeUpgrade() {
+        // Redraw tower range circle
+
+        range *= upgrades["Range"][rangeLevel].getMulitplier();
+
+        base.initialize(targetCollider, range, drawHeight);
+        base.drawCircle(steps, range, lineRenderer, drawHeight);
+    }
+
+    private void onAttackSpeedUpgrade() {
+        fireRate *= upgrades["AS"][attackSpeedLevel].getMulitplier();
+    }
+
+    private void onDamageUpgrade() {
+        damage *= upgrades["Damage"][damageLevel].getMulitplier();
+    }
+
     public int getRangeLevel() {
         return this.rangeLevel;
     }
@@ -173,27 +226,17 @@ public class SingleTargetTower : Tower {
         return this.damageLevel;
     }
 
-    public override Upgrade getCurrentUpgradeLevel(string upgradeType) {
-        if (upgradeType == "Range") {
-            if (rangeLevel != -1) {
-                return upgrades[upgradeType][rangeLevel];
-            } else {
+
+    public override Upgrade getNextUpgrade(string upgradeType) {
+        switch (upgradeType) {
+            case "Range":
+                return upgrades["Range"][rangeLevel + 1];
+            case "AS":
+                return upgrades["AS"][attackSpeedLevel + 1];
+            case "Damage":
+                return upgrades["Damage"][damageLevel + 1];
+            default:
                 return null;
-            }
-        } else if (upgradeType == "AS") {
-            if (attackSpeedLevel != -1) {
-                return upgrades[upgradeType][attackSpeedLevel];
-            } else {
-                return null;
-            }
-        } else if (upgradeType == "Damage") {
-            if (damageLevel != -1) {
-                return upgrades[upgradeType][damageLevel];
-            } else {
-                return null;
-            }
-        } else {
-            return null;
         }
     }
 

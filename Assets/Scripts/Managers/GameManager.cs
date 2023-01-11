@@ -20,12 +20,14 @@ public class GameManager : MonoBehaviour {
         EventBus<GlobalDamageEvent>.Subscribe(onGlobalDamage);
         EventBus<EnemyKilledEvent>.Subscribe(onEnemyKilled);
         EventBus<GameIsWonEvent>.Subscribe(onGameWon);
+        EventBus<RemoveMoneyEvent>.Subscribe(onMoneyRemove);
     }
 
     private void OnDisable() {
         EventBus<GlobalDamageEvent>.Unsubscribe(onGlobalDamage);
         EventBus<EnemyKilledEvent>.Unsubscribe(onEnemyKilled);
         EventBus<GameIsWonEvent>.Unsubscribe(onGameWon);
+        EventBus<RemoveMoneyEvent>.Unsubscribe(onMoneyRemove);
     }
 
 
@@ -62,6 +64,10 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    private void onMoneyRemove(RemoveMoneyEvent e) {
+        removeMoney(e.value);
+        EventBus<UpdateMoneyEvent>.Raise(new UpdateMoneyEvent(this.getMoney()));
+    }
 
     private void onGlobalDamage(GlobalDamageEvent e) {
         Debug.Log("Global Damage: " + e.enemy.Value);

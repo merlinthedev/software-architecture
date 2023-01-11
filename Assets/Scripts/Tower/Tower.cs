@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public abstract class Tower : MonoBehaviour {
@@ -11,7 +12,6 @@ public abstract class Tower : MonoBehaviour {
     protected abstract SphereCollider TargetCollider { get; }
     protected abstract float DrawHeight { get; set; }
 
-
     protected abstract float Damage { get; set; }
     protected abstract float FireRate { get; set; }
 
@@ -19,7 +19,17 @@ public abstract class Tower : MonoBehaviour {
 
     protected abstract IEnumerator attack();
 
-    public abstract Upgrade getCurrentUpgradeLevel(string upgradeType);
+    public abstract Upgrade getNextUpgrade(string upgradeType);
+    protected abstract void onTowerPlaced(TowerPlacedEvent e);
+
+    protected virtual void OnEnable() {
+        EventBus<TowerPlacedEvent>.Subscribe(onTowerPlaced);
+    }
+
+    protected virtual void OnDisable() {
+        EventBus<TowerPlacedEvent>.Unsubscribe(onTowerPlaced);
+    }
+
 
     protected void initialize(SphereCollider targetCollider, float range, float drawHeight) {
         targetCollider.radius = range;

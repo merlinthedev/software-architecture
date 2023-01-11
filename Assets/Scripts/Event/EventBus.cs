@@ -86,6 +86,16 @@ public class UpdateHealthEvent : Event {
     }
 }
 
+public class RemoveMoneyEvent : Event {
+
+    public int value;
+
+    public RemoveMoneyEvent(int value) {
+        this.value = value;
+    }
+
+}
+
 public class UpdateMoneyEvent : Event {
 
     public int money;

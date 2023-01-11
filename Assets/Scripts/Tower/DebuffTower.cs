@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+
 using UnityEngine;
 
 public class DebuffTower : Tower {
@@ -18,7 +19,8 @@ public class DebuffTower : Tower {
     [SerializeField] private float damage;
     [SerializeField] private int cost;
 
-    
+
+
     private List<Enemy> targets = new List<Enemy>();
 
     #region protected
@@ -88,17 +90,29 @@ public class DebuffTower : Tower {
         }
     }
 
-    
 
     #endregion
 
+    protected override void OnEnable() {
+        EventBus<TowerPlacedEvent>.Subscribe(onTowerPlaced);
 
+    }
+
+    protected override void OnDisable() {
+        EventBus<TowerPlacedEvent>.Unsubscribe(onTowerPlaced);
+    }
+
+    protected override void onTowerPlaced(TowerPlacedEvent e) {
+        Debug.LogError("TOWER PLACED EVENT RAISED");
+        if (e.tower == this) {
+            StartCoroutine(attack());
+        }
+    }
 
     void Start() {
         base.initialize(targetCollider, range, drawHeight);
         base.drawCircle(steps, range, lineRenderer, drawHeight);
 
-        StartCoroutine(attack());
     }
 
     void Update() {
@@ -140,7 +154,9 @@ public class DebuffTower : Tower {
         }
     }
 
-    public override Upgrade getCurrentUpgradeLevel(string upgradeType) {
+    
+
+    public override Upgrade getNextUpgrade(string upgradeType) {
         throw new System.NotImplementedException();
     }
 }
