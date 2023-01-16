@@ -17,6 +17,7 @@ public class Upgrade : ScriptableObject {
     [SerializeField] private Upgrade parent;
 
     public int getCost() { return this.cost; }
+    public string getName() { return this.name; }
     public float getMulitplier() { return this.multiplier; }
 
 }

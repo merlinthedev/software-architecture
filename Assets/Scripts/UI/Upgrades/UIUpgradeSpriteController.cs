@@ -3,12 +3,12 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class UIUpgradeSpriteController : MonoBehaviour {
+    [SerializeField] private string upgradeType;
+    [SerializeField] private UpgradeTextController upgradeTextController;
 
-    private Tower referenceTower;
-
-    private List<Image> upgradeButtons = new List<Image>();
+    private Upgrade upgrade;
     private void OnEnable() {
-        EventBus<UpdateMoneyEvent>.Subscribe(onMoneyUpdate);    
+        EventBus<UpdateMoneyEvent>.Subscribe(onMoneyUpdate);
     }
 
     private void OnDisable() {
@@ -20,10 +20,27 @@ public class UIUpgradeSpriteController : MonoBehaviour {
     }
 
     private void changeSpriteColors() {
-        for(int i = 0; i < upgradeButtons.Count; i++) {
-                        
+        if (GameManager.enoughMoney(upgrade.getCost())) {
+            GetComponent<Image>().color = Color.white;
+        } else {
+            GetComponent<Image>().color = Color.red;
         }
     }
 
+    public void setUpgradeText() {
+        upgradeTextController.updateText(upgrade.getCost().ToString() + "$" + " \n" + upgrade.getName() + " \n" + upgrade.getMulitplier().ToString() + "x");
+    }
+
+    public string getUpgradeType() {
+        return this.upgradeType;
+    }
+
+    public UpgradeTextController getUpgradeTextController() {
+        return this.upgradeTextController;
+    }
+
+    public void setUpgrade(Upgrade upgrade) {
+        this.upgrade = upgrade;
+    }
 
 }

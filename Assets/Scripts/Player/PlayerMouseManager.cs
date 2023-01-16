@@ -91,6 +91,7 @@ public class PlayerMouseManager : MonoBehaviour {
         towerToDrag.transform.position = new Vector3(towerToDrag.transform.position.x, towerToDrag.transform.position.y + 0.8f, towerToDrag.transform.position.z);
 
         EventBus<TowerPlacedEvent>.Raise(new TowerPlacedEvent(towerScript));
+        EventBus<TowerSelectedEvent>.Raise(new TowerSelectedEvent(towerScript));
 
         // Do this but without GetComponent 
         // Also do this but with events?

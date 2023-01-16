@@ -10,6 +10,9 @@ public class UIUpgradeController : MonoBehaviour {
     [SerializeField] private RectTransform rTransform;
 
 
+    [SerializeField] private List<UIUpgradeSpriteController> sprites = new List<UIUpgradeSpriteController>();
+
+
     private Tower tower;
 
 
@@ -28,6 +31,16 @@ public class UIUpgradeController : MonoBehaviour {
     private void onTowerSelect(TowerSelectedEvent e) {
         rTransform.transform.position = new Vector3(125, rTransform.transform.position.y, rTransform.transform.position.z);
         tower = e.tower;
+
+        passUpgradeData();
+    }
+
+    private void passUpgradeData() {
+        // Get all 3 types of upgrades and send one to each sprite element
+        for (int i = 0; i < sprites.Count; i++) {
+            sprites[i].setUpgrade(tower.getNextUpgrade(sprites[i].getUpgradeType()));
+            sprites[i].setUpgradeText();
+        }
     }
 
     private void resetUI() {
