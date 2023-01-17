@@ -38,6 +38,9 @@ public class UIUpgradeController : MonoBehaviour {
     private void passUpgradeData() {
         // Get all 3 types of upgrades and send one to each sprite element
         for (int i = 0; i < sprites.Count; i++) {
+            if(tower.getNextUpgrade(sprites[i].getUpgradeType()) == null) {
+                                
+            }
             sprites[i].setUpgrade(tower.getNextUpgrade(sprites[i].getUpgradeType()));
             sprites[i].setUpgradeText();
         }
