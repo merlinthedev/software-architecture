@@ -267,8 +267,11 @@ MonoBehaviour:
   damage: 4
   cost: 50
   rangeUpgrades:
+  - {fileID: 11400000, guid: 492fa701cb1ab5d48a6d3cde6f65f9a2, type: 2}
   - {fileID: 11400000, guid: 049aa63efdcb69942b1ca7f3e264f3de, type: 2}
   attackSpeedUpgrades:
+  - {fileID: 11400000, guid: 3e001d98713e7e4498c8216c2e0fd3a7, type: 2}
   - {fileID: 11400000, guid: 8384c2f82edfc8e45a4171045890c38f, type: 2}
   damageUpgrades:
+  - {fileID: 11400000, guid: 17aca82238d3b7242ada5c95b7913580, type: 2}
   - {fileID: 11400000, guid: 0515efa3eea74f64482938f60ce3dd96, type: 2}

@@ -17,6 +17,19 @@ class AOETower : Tower {
     [SerializeField] private float damage;
     [SerializeField] private int cost;
 
+    [Header("Upgrades")]
+    [SerializeField] private List<Upgrade> rangeUpgrades = new List<Upgrade>();
+    private int rangeLevel = -1;
+    [SerializeField] private List<Upgrade> attackSpeedUpgrades = new List<Upgrade>();
+    private int attackSpeedLevel = -1;
+    [SerializeField] private List<Upgrade> damageUpgrades = new List<Upgrade>();
+    private int damageLevel = -1;
+
+
+
+
+    private Dictionary<string, List<Upgrade>> upgrades = new Dictionary<string, List<Upgrade>>();
+
 
 
 
@@ -152,6 +165,14 @@ class AOETower : Tower {
 
     public override Upgrade getNextUpgrade(string upgradeType) {
         throw new System.NotImplementedException();
+    }
+
+    public override List<Upgrade> getUpgradeListFromType(string upgradeType) {
+        throw new System.NotImplementedException();
+    }
+
+    public override Dictionary<string, List<Upgrade>> getUpgradeMap() {
+        return upgrades;
     }
 
 }

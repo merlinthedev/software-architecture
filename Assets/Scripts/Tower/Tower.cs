@@ -20,6 +20,8 @@ public abstract class Tower : MonoBehaviour {
     protected abstract IEnumerator attack();
 
     public abstract Upgrade getNextUpgrade(string upgradeType);
+    public abstract List<Upgrade> getUpgradeListFromType(string upgradeType);
+    public abstract Dictionary<string, List<Upgrade>> getUpgradeMap();
     protected abstract void onTowerPlaced(TowerPlacedEvent e);
 
     protected virtual void OnEnable() {

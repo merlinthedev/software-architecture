@@ -23,11 +23,11 @@ public class SingleTargetTower : Tower {
 
     [Header("Upgrades")]
     [SerializeField] private List<Upgrade> rangeUpgrades = new List<Upgrade>();
-    private int rangeLevel = -1;
+    private int rangeLevel = 0;
     [SerializeField] private List<Upgrade> attackSpeedUpgrades = new List<Upgrade>();
-    private int attackSpeedLevel = -1;
+    private int attackSpeedLevel = 0;
     [SerializeField] private List<Upgrade> damageUpgrades = new List<Upgrade>();
-    private int damageLevel = -1;
+    private int damageLevel = 0;
 
 
 
@@ -128,6 +128,7 @@ public class SingleTargetTower : Tower {
     }
 
     private void Start() {
+        
 
         initializeDictionary();
 
@@ -152,6 +153,8 @@ public class SingleTargetTower : Tower {
             yield return new WaitForSeconds(0);
         }
     }
+
+
 
     private void initializeDictionary() {
         // Add lists to map
@@ -182,15 +185,12 @@ public class SingleTargetTower : Tower {
         if (e.tower == this) {
             switch (e.upgradeType) {
                 case "Range":
-                    rangeLevel++;
                     onRangeUpgrade();
                     break;
                 case "AS":
-                    attackSpeedLevel++;
                     onAttackSpeedUpgrade();
                     break;
                 case "Damage":
-                    damageLevel++;
                     onDamageUpgrade();
                     break;
             }
@@ -201,6 +201,7 @@ public class SingleTargetTower : Tower {
         // Redraw tower range circle
 
         range *= upgrades["Range"][rangeLevel].getMulitplier();
+        rangeLevel++;
 
         base.initialize(targetCollider, range, drawHeight);
         base.drawCircle(steps, range, lineRenderer, drawHeight);
@@ -208,10 +209,12 @@ public class SingleTargetTower : Tower {
 
     private void onAttackSpeedUpgrade() {
         fireRate *= upgrades["AS"][attackSpeedLevel].getMulitplier();
+        attackSpeedLevel++;
     }
 
     private void onDamageUpgrade() {
         damage *= upgrades["Damage"][damageLevel].getMulitplier();
+        damageLevel++;
     }
 
     public int getRangeLevel() {
@@ -224,6 +227,14 @@ public class SingleTargetTower : Tower {
 
     public int getDamageLevel() {
         return this.damageLevel;
+    }
+
+    public override List<Upgrade> getUpgradeListFromType(string upgradeType) {
+        return upgrades[upgradeType];
+    }
+
+    public override Dictionary<string, List<Upgrade>> getUpgradeMap() {
+        return upgrades;
     }
 
 
