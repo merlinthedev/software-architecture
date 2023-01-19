@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class UIUpgradeButton : MonoBehaviour {
 
-    [SerializeField] private string upgradeType;
+    [SerializeField] private TMPro.TextMeshProUGUI upgradeName;
+
+    private string upgradeType;
 
     private Tower tower;
 
@@ -24,4 +26,9 @@ public class UIUpgradeButton : MonoBehaviour {
     public void setUpgradeType(string upgradeType) {
         this.upgradeType = upgradeType;
     }
+
+    public void setUpgradeText(string text) {
+        upgradeName.text = text;
+    }
+
 }

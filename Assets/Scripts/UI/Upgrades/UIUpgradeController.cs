@@ -11,7 +11,7 @@ public class UIUpgradeController : MonoBehaviour {
     [SerializeField] private UIUpgradeButton upgradePrefab;
     [SerializeField] private RectTransform upgradeContainer;
 
-    private List<UIUpgradeButton> upgradeButtons = new List<UIUpgradeButton>();
+    [SerializeField] private List<UIUpgradeButton> upgradeButtons = new List<UIUpgradeButton>();
 
 
     private void OnEnable() {
@@ -31,6 +31,8 @@ public class UIUpgradeController : MonoBehaviour {
 
         foreach (KeyValuePair<string, List<Upgrade>> entry in tower.getUpgradeMap()) {
             var returned = Instantiate(upgradePrefab, transform);
+            returned.setUpgradeText(entry.Key + " " + entry.Value[0].getCost());
+            returned.setUpgradeType(entry.Key);
             upgradeButtons.Add(returned);
         }
 
@@ -47,8 +49,10 @@ public class UIUpgradeController : MonoBehaviour {
 
     public void hideUI() {
         upgradeContainer.position = new Vector3(-125, upgradeContainer.position.y, upgradeContainer.position.z);
-        for(int i = 0; i < upgradeButtons.Count; i++) {
-            Destroy(upgradeButtons[i]);
+        for (int i = 0; i < upgradeButtons.Count; i++) {
+            Destroy(upgradeButtons[i].gameObject);
         }
+
+        upgradeButtons.Clear();
     }
 }
