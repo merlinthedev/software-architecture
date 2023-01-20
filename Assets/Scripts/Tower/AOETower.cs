@@ -163,6 +163,31 @@ class AOETower : Tower {
         }
     }
 
+    public override int getRangeLevel() {
+        return this.rangeLevel;
+    }
+
+    public override int getAttackSpeedLevel() {
+        return this.attackSpeedLevel;
+    }
+
+    public override int getDamageLevel() {
+        return this.damageLevel;
+    }
+
+    public override int getUpgradeLevelFromType(string upgradeType) {
+        switch (upgradeType) {
+            case "Range":
+                return rangeLevel;
+            case "AS":
+                return attackSpeedLevel;
+            case "Damage":
+                return damageLevel;
+            default:
+                return -1;
+        }
+    }
+
     public override Upgrade getNextUpgrade(string upgradeType) {
         throw new System.NotImplementedException();
     }

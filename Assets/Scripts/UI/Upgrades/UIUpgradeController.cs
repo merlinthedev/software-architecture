@@ -31,17 +31,23 @@ public class UIUpgradeController : MonoBehaviour {
 
         foreach (KeyValuePair<string, List<Upgrade>> entry in tower.getUpgradeMap()) {
             var returned = Instantiate(upgradePrefab, transform);
-            returned.setUpgradeText(entry.Key + " " + entry.Value[0].getCost());
+            if (tower.getUpgradeLevelFromType(entry.Key) >= entry.Value.Count - 1) {
+                returned.setUpgradeText(entry.Key + " MAX");
+                returned.setIsMaxed(true);
+            } else {
+                returned.setUpgradeText(entry.Key + " " + entry.Value[tower.getUpgradeLevelFromType(entry.Key) + 1].getCost());
+            }
             returned.setUpgradeType(entry.Key);
+            Debug.LogWarning("Upgrade type: " + entry.Key);
+            returned.setTower(tower);
+            returned.setController(this);
             upgradeButtons.Add(returned);
         }
 
-        for (int i = 0; i < upgradeButtons.Count; i++) {
-            upgradeButtons[i].setTower(tower);
-            upgradeButtons[i].setUpgradeType(tower.getUpgradeMap().Keys.ToList()[i]);
-        }
 
     }
+
+
 
     private void Start() {
         hideUI();

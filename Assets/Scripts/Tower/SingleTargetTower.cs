@@ -182,6 +182,7 @@ public class SingleTargetTower : Tower {
     }
 
     private void onTowerUpgrade(TowerUpgradeEvent e) {
+        Debug.LogWarning("Tower upgrade event received");
         if (e.tower == this) {
             switch (e.upgradeType) {
                 case "Range":
@@ -200,33 +201,48 @@ public class SingleTargetTower : Tower {
     private void onRangeUpgrade() {
         // Redraw tower range circle
 
-        range *= upgrades["Range"][rangeLevel].getMulitplier();
         rangeLevel++;
+        range *= upgrades["Range"][rangeLevel].getMulitplier();
 
         base.initialize(targetCollider, range, drawHeight);
         base.drawCircle(steps, range, lineRenderer, drawHeight);
+
+        Debug.LogWarning("Range upgraded");
     }
 
     private void onAttackSpeedUpgrade() {
-        fireRate *= upgrades["AS"][attackSpeedLevel].getMulitplier();
         attackSpeedLevel++;
+        fireRate *= upgrades["AS"][attackSpeedLevel].getMulitplier();
     }
 
     private void onDamageUpgrade() {
-        damage *= upgrades["Damage"][damageLevel].getMulitplier();
         damageLevel++;
+        damage *= upgrades["Damage"][damageLevel].getMulitplier();
     }
 
-    public int getRangeLevel() {
+    public override int getRangeLevel() {
         return this.rangeLevel;
     }
 
-    public int getAttackSpeedLevel() {
+    public override int getAttackSpeedLevel() {
         return this.attackSpeedLevel;
     }
 
-    public int getDamageLevel() {
+    public override int getDamageLevel() {
         return this.damageLevel;
+    }
+
+    public override int getUpgradeLevelFromType(string upgradeType) {
+        switch (upgradeType) {
+            case "Range":
+                return rangeLevel;
+            case "AS":
+                return attackSpeedLevel;
+            case "Damage":
+                return damageLevel;
+            default:
+                return -1;
+        }
     }
 
     public override List<Upgrade> getUpgradeListFromType(string upgradeType) {

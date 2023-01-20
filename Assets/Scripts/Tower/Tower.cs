@@ -24,6 +24,12 @@ public abstract class Tower : MonoBehaviour {
     public abstract Dictionary<string, List<Upgrade>> getUpgradeMap();
     protected abstract void onTowerPlaced(TowerPlacedEvent e);
 
+    public abstract int getRangeLevel();
+    public abstract int getAttackSpeedLevel();
+    public abstract int getDamageLevel();
+
+    public abstract int getUpgradeLevelFromType(string upgradeType);
+
     protected virtual void OnEnable() {
         EventBus<TowerPlacedEvent>.Subscribe(onTowerPlaced);
     }
