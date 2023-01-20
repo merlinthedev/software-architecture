@@ -14,12 +14,38 @@ public class UIUpgradeButton : MonoBehaviour {
 
     private UIUpgradeController upgradeController;
 
+
+
+    private void OnEnable() {
+        EventBus<UpdateMoneyEvent>.Subscribe(onMoneyUpdate);
+    }
+
+    private void OnDisable() {
+        EventBus<UpdateMoneyEvent>.Unsubscribe(onMoneyUpdate);
+    }
+
+    private void onMoneyUpdate(UpdateMoneyEvent e) {
+        evaluateButtonColors(e.money);
+    }
+
     void Start() {
 
     }
 
     void Update() {
 
+    }
+
+    private void evaluateButtonColors(int globalMoney) {
+        if (tower != null) {
+            if (tower.getCurrentUpgradeFromType(upgradeType).getParent() != null) {
+                if (tower.getCurrentUpgradeFromType(upgradeType).getParent().getCost() > globalMoney) {
+                    upgradeImage.color = new Color(1f, 0, 0, 1f);
+                } else {
+                    upgradeImage.color = new Color(1f, 1f, 1f, 1f);
+                }
+            }
+        }
     }
 
     public void setController(UIUpgradeController controller) {
@@ -49,6 +75,8 @@ public class UIUpgradeButton : MonoBehaviour {
                 EventBus<TowerUpgradeEvent>.Raise(new TowerUpgradeEvent(upgradeType, tower));
             }
         }
+
+
         upgradeController.hideUI();
     }
 

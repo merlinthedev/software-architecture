@@ -179,6 +179,19 @@ public class DebuffTower : Tower {
         return this.damageLevel;
     }
 
+    public override Upgrade getCurrentUpgradeFromType(string upgradeType) {
+        switch (upgradeType) {
+            case "Range":
+                return upgrades["Range"][rangeLevel];
+            case "AS":
+                return upgrades["AS"][attackSpeedLevel];
+            case "Damage":
+                return upgrades["Damage"][damageLevel];
+            default:
+                return null;
+        }
+    }
+
     public override int getUpgradeLevelFromType(string upgradeType) {
         switch (upgradeType) {
             case "Range":
