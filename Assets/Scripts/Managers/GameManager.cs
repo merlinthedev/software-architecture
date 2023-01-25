@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
         EventBus<EnemyKilledEvent>.Subscribe(onEnemyKilled);
         EventBus<GameIsWonEvent>.Subscribe(onGameWon);
         EventBus<RemoveMoneyEvent>.Subscribe(onMoneyRemove);
+        EventBus<WavePauseEvent>.Subscribe(onWavePause);
     }
 
     private void OnDisable() {
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour {
         EventBus<EnemyKilledEvent>.Unsubscribe(onEnemyKilled);
         EventBus<GameIsWonEvent>.Unsubscribe(onGameWon);
         EventBus<RemoveMoneyEvent>.Unsubscribe(onMoneyRemove);
+        EventBus<WavePauseEvent>.Unsubscribe(onWavePause);
     }
 
 
@@ -77,6 +79,10 @@ public class GameManager : MonoBehaviour {
     private void onEnemyKilled(EnemyKilledEvent e) {
         addMoney(e.enemy.Value);
         EventBus<UpdateMoneyEvent>.Raise(new UpdateMoneyEvent(this.getMoney()));
+    }
+
+    private void onWavePause(WavePauseEvent e) {
+        setBuildingPhase(e.isPaused);
     }
 
     private void globalDeath() {

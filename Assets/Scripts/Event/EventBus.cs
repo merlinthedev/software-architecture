@@ -1,7 +1,7 @@
 public abstract class Event { }
 
 public class EventBus<T> where T : Event {
-    public static event System.Action<T> OnEventRaised;
+    private static event System.Action<T> OnEventRaised;
     public static void Subscribe(System.Action<T> handler) {
         OnEventRaised += handler;
     }
@@ -133,3 +133,17 @@ public class GameIsOverEvent : Event {
     }
 
 }
+
+public class WavePauseEvent : Event {
+
+    public bool isPaused;
+    public int timeLeft;
+
+    public WavePauseEvent(bool isPaused, int timeLeft) {
+        this.isPaused = isPaused;
+        this.timeLeft = timeLeft;
+    }
+
+}
+
+

@@ -7,7 +7,6 @@ using UnityEngine.Events;
 public class EndpointManager : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
-
         // REFACTOR!!!
         if (other.CompareTag("Enemy")) {
             EventBus<GlobalDamageEvent>.Raise(new GlobalDamageEvent(other.GetComponent<Enemy>()));

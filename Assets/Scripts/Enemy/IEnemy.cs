@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using UnityEngine;
 
 public interface IEnemy {
@@ -6,6 +7,9 @@ public interface IEnemy {
     public int Health { get; set; }
     public int MaxHealth { get; set; }
     public int Value { get; set; }
+
+    public bool Alive { get; set; }
+    public bool Debuffed { get; set; }
 
 
 }

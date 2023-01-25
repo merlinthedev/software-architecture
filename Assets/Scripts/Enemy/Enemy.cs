@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+using TMPro;
+
 public class Enemy : MonoBehaviour, IEnemy {
 
     [SerializeField] private float movementSpeed;
@@ -11,19 +13,19 @@ public class Enemy : MonoBehaviour, IEnemy {
     [SerializeField] private int maxHealth;
     [SerializeField] private int value;
 
-    [SerializeField] private bool alive = true;
-    [SerializeField] private bool debuffed = false;
+    [SerializeField] private bool alive;
+    [SerializeField] private bool debuffed;
 
     [SerializeField] private Collider enemyCollider;
 
 
     [SerializeField] private NavMeshAgent agent;
+
     private Transform endpointTransform;
 
 
     private Vector3 lastPosition;
     private float distanceTraveled;
-
     private float baseMovementSpeed;
 
 
@@ -64,6 +66,26 @@ public class Enemy : MonoBehaviour, IEnemy {
 
         set {
             maxHealth = value;
+        }
+    }
+
+    public bool Alive {
+        get {
+            return alive;
+        }
+
+        set {
+            alive = value;
+        }
+    }
+
+    public bool Debuffed {
+        get {
+            return debuffed;
+        }
+
+        set {
+            debuffed = value;
         }
     }
 
@@ -135,6 +157,9 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     private void die() {
         this.alive = false;
+
+        // Wait 2 seconds
+
         EventBus<EnemyKilledEvent>.Raise(new EnemyKilledEvent(this));
     }
 
@@ -150,21 +175,8 @@ public class Enemy : MonoBehaviour, IEnemy {
         return this.agent;
     }
 
-
-    public void setDebuffed(bool value) {
-        this.debuffed = value;
-    }
-
     public Collider getCollider() {
         return this.enemyCollider;
-    }
-
-    public bool isAlive() {
-        return this.alive;
-    }
-
-    public bool isDebuffed() {
-        return this.debuffed;
     }
 
     public void setDestinationTransform(Transform target) {

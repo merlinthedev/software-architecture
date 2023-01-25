@@ -235,6 +235,12 @@ MonoBehaviour:
   fireRate: 0.2
   damage: 0.5
   cost: 20
+  rangeUpgrades:
+  - {fileID: 11400000, guid: fb4f493fe0af8bd4b8c3e7ab957f6e3c, type: 2}
+  attackSpeedUpgrades:
+  - {fileID: 11400000, guid: bb53d230e1e258e4f8a547dcd5c5ecd1, type: 2}
+  damageUpgrades:
+  - {fileID: 11400000, guid: c8e161194596c7c42b1c28a3e797fbd2, type: 2}
 --- !u!1 &3981177525359238148
 GameObject:
   m_ObjectHideFlags: 0

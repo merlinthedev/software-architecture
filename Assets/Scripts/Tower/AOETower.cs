@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using Unity.VisualScripting;
+
 using UnityEngine;
 
 class AOETower : Tower {
@@ -19,11 +21,11 @@ class AOETower : Tower {
 
     [Header("Upgrades")]
     [SerializeField] private List<Upgrade> rangeUpgrades = new List<Upgrade>();
-    private int rangeLevel = -1;
+    private int rangeLevel = 0;
     [SerializeField] private List<Upgrade> attackSpeedUpgrades = new List<Upgrade>();
-    private int attackSpeedLevel = -1;
+    private int attackSpeedLevel = 0;
     [SerializeField] private List<Upgrade> damageUpgrades = new List<Upgrade>();
-    private int damageLevel = -1;
+    private int damageLevel = 0;
 
 
 
@@ -103,18 +105,20 @@ class AOETower : Tower {
         }
     }
 
-    
+
 
 
     #endregion
 
     protected override void OnEnable() {
         EventBus<TowerPlacedEvent>.Subscribe(onTowerPlaced);
+        EventBus<TowerUpgradeEvent>.Subscribe(onTowerUpgrade);
 
     }
 
     protected override void OnDisable() {
         EventBus<TowerPlacedEvent>.Unsubscribe(onTowerPlaced);
+        EventBus<TowerUpgradeEvent>.Unsubscribe(onTowerUpgrade);
     }
 
     protected override void onTowerPlaced(TowerPlacedEvent e) {
@@ -125,9 +129,17 @@ class AOETower : Tower {
 
     private void Start() {
 
+        initializeDictionary();
+
         base.drawCircle(steps, range, lineRenderer, drawHeight);
         base.initialize(targetCollider, range, drawHeight);
 
+    }
+
+    private void initializeDictionary() {
+        upgrades.Add("Range", rangeUpgrades);
+        upgrades.Add("AS", attackSpeedUpgrades);
+        upgrades.Add("Damage", damageUpgrades);
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -145,13 +157,13 @@ class AOETower : Tower {
             }
         }
     }
-    
+
 
     protected override IEnumerator attack() {
         while (true) {
             if (targets.Count > 0) {
                 foreach (Enemy enemy in targets.ToList()) {
-                    if (enemy.isAlive()) {
+                    if (enemy.Alive) {
                         enemy.takeDamage(damage, Enemy.DamageType.FLAT);
                     } else {
                         targets.Remove(enemy);
@@ -162,6 +174,42 @@ class AOETower : Tower {
             yield return new WaitForSeconds(fireRate);
         }
     }
+
+    private void onTowerUpgrade(TowerUpgradeEvent e) {
+        if (e.tower == this) {
+            switch (e.upgradeType) {
+                case "Range":
+                    onRangeUpgrade();
+                    break;
+                case "AS":
+                    onAttackSpeedUpgrade();
+                    break;
+                case "Damage":
+                    onDamageUpgrade();
+                    break;
+            }
+        }
+    }
+
+    private void onRangeUpgrade() {
+        rangeLevel++;
+        range *= upgrades["Range"][rangeLevel].getMultiplier();
+
+        base.initialize(targetCollider, range, drawHeight);
+        base.drawCircle(steps, range, lineRenderer, drawHeight);
+
+    }
+
+    private void onDamageUpgrade() {
+        damageLevel++;
+        damage *= upgrades["Damage"][damageLevel].getMultiplier();
+    }
+
+    private void onAttackSpeedUpgrade() {
+        attackSpeedLevel++;
+        fireRate *= upgrades["AS"][attackSpeedLevel].getMultiplier();
+    }
+
 
     public override int getRangeLevel() {
         return this.rangeLevel;
@@ -202,11 +250,20 @@ class AOETower : Tower {
     }
 
     public override Upgrade getNextUpgrade(string upgradeType) {
-        throw new System.NotImplementedException();
+        switch (upgradeType) {
+            case "Range":
+                return upgrades["Range"][rangeLevel + 1];
+            case "AS":
+                return upgrades["AS"][attackSpeedLevel + 1];
+            case "Damage":
+                return upgrades["Damage"][damageLevel + 1];
+            default:
+                return null;
+        }
     }
 
     public override List<Upgrade> getUpgradeListFromType(string upgradeType) {
-        throw new System.NotImplementedException();
+        return upgrades[upgradeType];
     }
 
     public override Dictionary<string, List<Upgrade>> getUpgradeMap() {

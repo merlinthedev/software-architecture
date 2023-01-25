@@ -18,7 +18,7 @@ public class Upgrade : ScriptableObject {
 
     public int getCost() { return this.cost; }
     public string getName() { return this.name; }
-    public float getMulitplier() { return this.multiplier; }
+    public float getMultiplier() { return this.multiplier; }
     public Upgrade getParent() { return this.parent; }
 
 }

@@ -232,5 +232,11 @@ MonoBehaviour:
   targetCollider: {fileID: 863219193958770491}
   drawHeight: 0
   fireRate: 0.6
-  damage: 6
+  damage: 8
   cost: 110
+  rangeUpgrades:
+  - {fileID: 11400000, guid: 1db1331c0db8632488095d0fe8fed8e8, type: 2}
+  attackSpeedUpgrades:
+  - {fileID: 11400000, guid: aaf6bd248d3a62a48b72fc570d0fba9c, type: 2}
+  damageUpgrades:
+  - {fileID: 11400000, guid: 18e1a5828fdbcf04eb6463f98447779f, type: 2}

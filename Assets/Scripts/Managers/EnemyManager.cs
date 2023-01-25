@@ -46,7 +46,9 @@ public class EnemyManager : MonoBehaviour {
 
         // Wait 10 seconds before starting to spawn enemies
 
-        if (shouldSpawn) Invoke("startSpawn", waveDelay);
+        if (shouldSpawn) {
+            startSpawn();
+        }
     }
 
     private void startSpawn() {
@@ -55,10 +57,17 @@ public class EnemyManager : MonoBehaviour {
 
     IEnumerator spawnEnemy() {
         while (!GameManager.getInstance().isGameOver()) {
+
+            for(int i = waveDelay; i >= 0; i--) {
+                EventBus<WavePauseEvent>.Raise(new WavePauseEvent(true, i));
+                yield return new WaitForSeconds(1);
+            }
+
+            EventBus<WavePauseEvent>.Raise(new WavePauseEvent(false, 0));
+
             foreach (Wave wave in waveContents) {
-                GameManager.getInstance().setBuildingPhase(false);
+                // GameManager.getInstance().setBuildingPhase(false);
                 GameManager.getInstance().setWave(waveContents.IndexOf(wave) + 1);
-                Debug.LogWarning("Wave: " + GameManager.getInstance().getWaveNumber());
                 EventBus<UpdateWaveEvent>.Raise(new UpdateWaveEvent(GameManager.getInstance().getWaveNumber()));
                 foreach (Enemy enemy in wave.enemies) {
                     Enemy returned = Instantiate(enemy, spawnerPosition.position, Quaternion.identity);
@@ -80,9 +89,17 @@ public class EnemyManager : MonoBehaviour {
                 }
 
                 Debug.LogWarning("All enemies have been destroyed, starting " + waveDelay + " second cooldown");
-                GameManager.getInstance().setBuildingPhase(true);
+                // GameManager.getInstance().setBuildingPhase(true);
 
-                yield return new WaitForSeconds(waveDelay);
+                EventBus<WavePauseEvent>.Raise(new WavePauseEvent(true, waveDelay));
+
+                for(int i = waveDelay; i >= 1; i--) {
+                    Debug.LogWarning("Cooldown: " + i);
+                    EventBus<WavePauseEvent>.Raise(new WavePauseEvent(true, i));
+                    yield return new WaitForSeconds(1);
+                }
+
+                EventBus<WavePauseEvent>.Raise(new WavePauseEvent(false, 0));
 
             }
         }

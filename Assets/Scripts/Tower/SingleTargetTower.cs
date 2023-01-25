@@ -143,14 +143,14 @@ public class SingleTargetTower : Tower {
     protected override IEnumerator attack() {
         while (true) {
             if (targets.Count > 0) {
-                if (targets[0].isAlive()) {
+                if (targets[0].Alive) {
                     targets[0].takeDamage(damage, Enemy.DamageType.FLAT);
                 } else {
                     targets.RemoveAt(0);
                     yield return null;
                 }
             }
-            yield return new WaitForSeconds(0);
+            yield return new WaitForSeconds(fireRate);
         }
     }
 
@@ -182,7 +182,6 @@ public class SingleTargetTower : Tower {
     }
 
     private void onTowerUpgrade(TowerUpgradeEvent e) {
-        Debug.LogWarning("Tower upgrade event received");
         if (e.tower == this) {
             switch (e.upgradeType) {
                 case "Range":
@@ -202,7 +201,7 @@ public class SingleTargetTower : Tower {
         // Redraw tower range circle
 
         rangeLevel++;
-        range *= upgrades["Range"][rangeLevel].getMulitplier();
+        range *= upgrades["Range"][rangeLevel].getMultiplier();
 
         base.initialize(targetCollider, range, drawHeight);
         base.drawCircle(steps, range, lineRenderer, drawHeight);
@@ -212,12 +211,12 @@ public class SingleTargetTower : Tower {
 
     private void onAttackSpeedUpgrade() {
         attackSpeedLevel++;
-        fireRate *= upgrades["AS"][attackSpeedLevel].getMulitplier();
+        fireRate *= upgrades["AS"][attackSpeedLevel].getMultiplier();
     }
 
     private void onDamageUpgrade() {
         damageLevel++;
-        damage *= upgrades["Damage"][damageLevel].getMulitplier();
+        damage *= upgrades["Damage"][damageLevel].getMultiplier();
     }
 
     public override int getRangeLevel() {

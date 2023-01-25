@@ -21,11 +21,11 @@ public class DebuffTower : Tower {
 
     [Header("Upgrades")]
     [SerializeField] private List<Upgrade> rangeUpgrades = new List<Upgrade>();
-    private int rangeLevel = -1;
+    private int rangeLevel = 0;
     [SerializeField] private List<Upgrade> attackSpeedUpgrades = new List<Upgrade>();
-    private int attackSpeedLevel = -1;
+    private int attackSpeedLevel = 0;
     [SerializeField] private List<Upgrade> damageUpgrades = new List<Upgrade>();
-    private int damageLevel = -1;
+    private int damageLevel = 0;
 
 
 
@@ -108,21 +108,25 @@ public class DebuffTower : Tower {
 
     protected override void OnEnable() {
         EventBus<TowerPlacedEvent>.Subscribe(onTowerPlaced);
+        EventBus<TowerUpgradeEvent>.Subscribe(onTowerUpgrade);
 
     }
 
     protected override void OnDisable() {
         EventBus<TowerPlacedEvent>.Unsubscribe(onTowerPlaced);
+        EventBus<TowerUpgradeEvent>.Unsubscribe(onTowerUpgrade);
     }
 
     protected override void onTowerPlaced(TowerPlacedEvent e) {
-        Debug.LogError("TOWER PLACED EVENT RAISED");
         if (e.tower == this) {
             StartCoroutine(attack());
         }
     }
 
     void Start() {
+
+        initializeDictionary();
+
         base.initialize(targetCollider, range, drawHeight);
         base.drawCircle(steps, range, lineRenderer, drawHeight);
 
@@ -136,7 +140,7 @@ public class DebuffTower : Tower {
         while (true) {
             if (targets.Count > 0) {
                 foreach (Enemy enemy in targets.ToList()) {
-                    if (enemy.isAlive()) {
+                    if (enemy.Alive) {
                         enemy.takeDamage(damage, Enemy.DamageType.DEBUFF);
                     } else {
                         targets.Remove(enemy);
@@ -146,6 +150,13 @@ public class DebuffTower : Tower {
             }
             yield return new WaitForSeconds(fireRate);
         }
+    }
+
+    private void initializeDictionary() {
+        upgrades.Add("Range", rangeUpgrades);
+        upgrades.Add("AS", attackSpeedUpgrades);
+        upgrades.Add("Damage", damageUpgrades);
+
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -161,10 +172,47 @@ public class DebuffTower : Tower {
             if (targets.Contains(enemy)) {
                 enemy.MovementSpeed = enemy.getBaseMovementSpeed();
                 enemy.getAgent().speed = enemy.getBaseMovementSpeed();
-                enemy.setDebuffed(false);
+                enemy.Alive = false;
                 targets.Remove(enemy);
             }
         }
+    }
+
+    private void onTowerUpgrade(TowerUpgradeEvent e) {
+        if (e.tower == this) {
+            switch(e.upgradeType) {
+                case "Range":
+                    onRangeUpgrade();
+                    break;
+                case "AS":
+                    onAttackSpeedUpgrade();
+                    break;
+                case "Damage":
+                    onDamageUpgrade();
+                    break;
+            }
+        }
+    }
+
+    private void onRangeUpgrade() {
+        rangeLevel++;
+        range *= upgrades["Range"][rangeLevel].getMultiplier();
+
+        base.initialize(targetCollider, range, drawHeight);
+        base.drawCircle(steps, range, lineRenderer, drawHeight);
+
+        Debug.LogWarning("Range upgraded");
+
+    }
+
+    private void onAttackSpeedUpgrade() {
+        attackSpeedLevel++;
+        fireRate *= upgrades["AS"][attackSpeedLevel].getMultiplier();
+    }
+
+    private void onDamageUpgrade() {
+        damageLevel++;
+        damage *= upgrades["Damage"][damageLevel].getMultiplier();
     }
 
     public override int getRangeLevel() {
@@ -206,11 +254,20 @@ public class DebuffTower : Tower {
     }
 
     public override Upgrade getNextUpgrade(string upgradeType) {
-        throw new System.NotImplementedException();
+        switch (upgradeType) {
+            case "Range":
+                return upgrades["Range"][rangeLevel + 1];
+            case "AS":
+                return upgrades["AS"][attackSpeedLevel + 1];
+            case "Damage":
+                return upgrades["Damage"][damageLevel + 1];
+            default:
+                return null;
+        }
     }
 
     public override List<Upgrade> getUpgradeListFromType(string upgradeType) {
-        throw new System.NotImplementedException();
+        return upgrades[upgradeType];
     }
 
     public override Dictionary<string, List<Upgrade>> getUpgradeMap() {
