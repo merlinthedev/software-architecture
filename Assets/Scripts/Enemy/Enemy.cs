@@ -21,11 +21,8 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     [SerializeField] private NavMeshAgent agent;
 
-    private Transform endpointTransform;
+    private Transform agentDestination;
 
-
-    private Vector3 lastPosition;
-    private float distanceTraveled;
     private float baseMovementSpeed;
 
 
@@ -101,15 +98,8 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     private void Update() {
         moveEnemy();
-        trackDistance();
     }
 
-    private void trackDistance() {
-        distanceTraveled += Vector3.Distance(transform.position, lastPosition);
-        lastPosition = transform.position;
-
-        //Debug.Log("Total distance traveled: " + distanceTraveled);
-    }
 
     private void moveEnemy() {
         //if (pointer < waypoints.Count) {
@@ -121,7 +111,7 @@ public class Enemy : MonoBehaviour, IEnemy {
         //}
 
         agent.speed = movementSpeed;
-        agent.destination = endpointTransform.transform.position;
+        agent.destination = agentDestination.transform.position;
     }
 
 
@@ -157,15 +147,9 @@ public class Enemy : MonoBehaviour, IEnemy {
 
     private void die() {
         this.alive = false;
-
-        // Wait 2 seconds
-
         EventBus<EnemyKilledEvent>.Raise(new EnemyKilledEvent(this));
     }
 
-    public float getDistanceTraveled() {
-        return this.distanceTraveled;
-    }
 
     public float getBaseMovementSpeed() {
         return this.baseMovementSpeed;
@@ -180,7 +164,7 @@ public class Enemy : MonoBehaviour, IEnemy {
     }
 
     public void setDestinationTransform(Transform target) {
-        this.endpointTransform = target;
+        this.agentDestination = target;
     }
 
     // Enum for damage types

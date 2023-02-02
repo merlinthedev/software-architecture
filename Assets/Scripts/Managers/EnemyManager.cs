@@ -8,7 +8,6 @@ public class EnemyManager : MonoBehaviour {
     [Header("Spawning")]
     [SerializeField] private int waveDelay;
     [SerializeField] private int spawnRate;
-    [SerializeField] private Enemy enemy;
     [SerializeField] private Transform spawnerPosition;
     [SerializeField] private Transform endpointTransform;
     [SerializeField] private bool shouldSpawn = true;
@@ -16,7 +15,8 @@ public class EnemyManager : MonoBehaviour {
 
 
 
-    public List<Wave> waveContents;
+
+    [SerializeField] private List<Wave> waveContents;
 
     [SerializeField] private List<Enemy> enemyList;
     [SerializeField] private Dictionary<Collider, Enemy> enemyMap = new Dictionary<Collider, Enemy>();
@@ -58,7 +58,7 @@ public class EnemyManager : MonoBehaviour {
     IEnumerator spawnEnemy() {
         while (!GameManager.getInstance().isGameOver()) {
 
-            for(int i = waveDelay; i >= 0; i--) {
+            for (int i = waveDelay; i >= 0; i--) {
                 EventBus<WavePauseEvent>.Raise(new WavePauseEvent(true, i));
                 yield return new WaitForSeconds(1);
             }
@@ -93,7 +93,7 @@ public class EnemyManager : MonoBehaviour {
 
                 EventBus<WavePauseEvent>.Raise(new WavePauseEvent(true, waveDelay));
 
-                for(int i = waveDelay; i >= 1; i--) {
+                for (int i = waveDelay; i >= 1; i--) {
                     Debug.LogWarning("Cooldown: " + i);
                     EventBus<WavePauseEvent>.Raise(new WavePauseEvent(true, i));
                     yield return new WaitForSeconds(1);
@@ -123,30 +123,26 @@ public class EnemyManager : MonoBehaviour {
     }
 
 
-    public void removeFromList(Enemy enemy) {
-        this.enemyList.Remove(enemy);
-    }
+    // public Dictionary<Collider, Enemy> getEnemyMap() {
+    //     return this.enemyMap;
+    // }
 
-    public Dictionary<Collider, Enemy> getEnemyMap() {
-        return this.enemyMap;
-    }
+    // public List<Enemy> getEnemyList() {
+    //     return this.enemyList;
 
-    public List<Enemy> getEnemyList() {
-        return this.enemyList;
-
-    }
+    // }
 
 
     public Enemy getEnemyFromMap(Collider collider) {
         return this.enemyMap[collider];
     }
 
-    public void removeFromMap(Collider collider) {
+    private void removeFromMap(Collider collider) {
         this.enemyMap.Remove(collider);
     }
 
-    public static EnemyManager getInstance() {
-        return instance;
+    private void removeFromList(Enemy enemy) {
+        this.enemyList.Remove(enemy);
     }
 
     private void fullEnemyRemove(Collider collider) {
@@ -157,5 +153,9 @@ public class EnemyManager : MonoBehaviour {
         Destroy(collider.gameObject);
 
         // Debug.Log("Successfully removed enemy from list and map");
+    }
+
+    public static EnemyManager getInstance() {
+        return instance;
     }
 }

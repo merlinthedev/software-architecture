@@ -11,5 +11,4 @@ public interface IEnemy {
     public bool Alive { get; set; }
     public bool Debuffed { get; set; }
 
-
 }
