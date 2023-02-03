@@ -48,6 +48,17 @@ public class UIUpgradeButton : MonoBehaviour {
         }
     }
 
+    private void evaluateButtonText() {
+        if (tower != null) {
+            if (tower.getUpgradeLevelFromType(upgradeType) >= tower.getUpgradeMap()[upgradeType].Count - 1) {
+                upgradeName.text = upgradeType + " MAX";
+                isMaxed = true;
+            } else {
+                upgradeName.text = upgradeType + " " + tower.getNextUpgrade(upgradeType).getCost();
+            }
+        }
+    }
+
     public void setController(UIUpgradeController controller) {
         this.upgradeController = controller;
     }
@@ -73,6 +84,7 @@ public class UIUpgradeButton : MonoBehaviour {
             if (GameManager.enoughMoney(tower.getNextUpgrade(upgradeType).getCost())) {
                 EventBus<RemoveMoneyEvent>.Raise(new RemoveMoneyEvent(tower.getNextUpgrade(upgradeType).getCost()));
                 EventBus<TowerUpgradeEvent>.Raise(new TowerUpgradeEvent(upgradeType, tower));
+                evaluateButtonText();
             }
         }
 
