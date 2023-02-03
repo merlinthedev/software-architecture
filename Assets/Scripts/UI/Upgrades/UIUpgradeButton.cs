@@ -51,10 +51,10 @@ public class UIUpgradeButton : MonoBehaviour {
     private void evaluateButtonText() {
         if (tower != null) {
             if (tower.getUpgradeLevelFromType(upgradeType) >= tower.getUpgradeMap()[upgradeType].Count - 1) {
-                upgradeName.text = upgradeType + " MAX";
+                upgradeName.text = upgradeType + "\n MAX";
                 isMaxed = true;
             } else {
-                upgradeName.text = upgradeType + " " + tower.getNextUpgrade(upgradeType).getCost();
+                upgradeName.text = upgradeType + " \n" + tower.getNextUpgrade(upgradeType).getCost();
             }
         }
     }

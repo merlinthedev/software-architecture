@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steps: 32
-  range: 2
+  range: 3
   lineRenderer: {fileID: 863219193958770490}
   targetCollider: {fileID: 863219193958770491}
   drawHeight: 0

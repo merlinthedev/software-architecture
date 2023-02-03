@@ -20,9 +20,7 @@ public class PlayerMouseManager : MonoBehaviour {
         EventBus<TowerUnselectEvent>.Unsubscribe(onTowerUnselect);
     }
 
-    private void Start() {
-        Debug.Log("Camera main script start");
-    }
+    private void Start() { }
 
 
     private void Update() {
@@ -66,13 +64,7 @@ public class PlayerMouseManager : MonoBehaviour {
             if (hit.collider.gameObject.tag == "Tile") {
                 // Debug.Log("Tile hit");
                 Tile selectedTile = hit.collider.gameObject.GetComponent<Tile>();
-                if (!selectedTile.isOccupied()) {
-                    // Debug.LogWarning("Tile is not occupied");
-                    return selectedTile;
-                } else {
-                    // Debug.LogError("This tile is already occupied");
-                    return null;
-                }
+                return selectedTile.isOccupied() ? null : selectedTile;
             }
         }
 

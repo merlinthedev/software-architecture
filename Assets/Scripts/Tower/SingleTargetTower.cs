@@ -128,7 +128,7 @@ public class SingleTargetTower : Tower {
     }
 
     private void Start() {
-        
+
 
         initializeDictionary();
 
@@ -141,7 +141,7 @@ public class SingleTargetTower : Tower {
     }
 
     protected override IEnumerator attack() {
-        while (true) {            
+        while (true) {
             if (targets.Count > 0) {
                 if (targets[0].Alive) {
                     targets[0].takeDamage(damage, Enemy.DamageType.FLAT);
@@ -152,15 +152,11 @@ public class SingleTargetTower : Tower {
             }
             yield return new WaitForSeconds(fireRate);
         }
-
-        
-
     }
 
 
 
     private void initializeDictionary() {
-        // Add lists to map
         upgrades.Add("Range", rangeUpgrades);
         upgrades.Add("AS", attackSpeedUpgrades);
         upgrades.Add("Damage", damageUpgrades);
@@ -181,8 +177,8 @@ public class SingleTargetTower : Tower {
             if (targets.Contains(enemy)) {
                 targets.Remove(enemy);
 
-                StopCoroutine(attack());    
-                StartCoroutine(attack());            
+                StopCoroutine(attack());
+                StartCoroutine(attack());
             }
         }
     }

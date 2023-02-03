@@ -28,16 +28,16 @@ public class UIUpgradeController : MonoBehaviour {
         hideUI();
 
 
-        upgradeContainer.position = new Vector3(125, upgradeContainer.position.y, upgradeContainer.position.z);
+        upgradeContainer.position = new Vector3(150, upgradeContainer.position.y, upgradeContainer.position.z);
 
 
         foreach (KeyValuePair<string, List<Upgrade>> entry in tower.getUpgradeMap()) {
             var returned = Instantiate(upgradePrefab, transform);
             if (tower.getUpgradeLevelFromType(entry.Key) >= entry.Value.Count - 1) {
-                returned.setUpgradeText(entry.Key + " MAX");
+                returned.setUpgradeText(entry.Key + "\n MAX");
                 returned.setIsMaxed(true);
             } else {
-                returned.setUpgradeText(entry.Key + " " + entry.Value[tower.getUpgradeLevelFromType(entry.Key) + 1].getCost());
+                returned.setUpgradeText(entry.Key + " \n" + entry.Value[tower.getUpgradeLevelFromType(entry.Key) + 1].getCost());
             }
             returned.setUpgradeType(entry.Key);
             Debug.LogWarning("Upgrade type: " + entry.Key);
@@ -57,7 +57,7 @@ public class UIUpgradeController : MonoBehaviour {
     }
 
     public void hideUI() {
-        upgradeContainer.position = new Vector3(-125, upgradeContainer.position.y, upgradeContainer.position.z);
+        upgradeContainer.position = new Vector3(-150, upgradeContainer.position.y, upgradeContainer.position.z);
         for (int i = 0; i < upgradeButtons.Count; i++) {
             Destroy(upgradeButtons[i].gameObject);
         }
