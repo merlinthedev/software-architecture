@@ -24,6 +24,8 @@ public class UIUpgradeController : MonoBehaviour {
 
     private void onTowerSelected(TowerSelectedEvent e) {
         tower = e.tower;
+        
+        hideUI();
 
 
         upgradeContainer.position = new Vector3(125, upgradeContainer.position.y, upgradeContainer.position.z);
@@ -41,6 +43,7 @@ public class UIUpgradeController : MonoBehaviour {
             Debug.LogWarning("Upgrade type: " + entry.Key);
             returned.setTower(tower);
             returned.setController(this);
+            returned.evaluateButtonColors(GameManager.getInstance().getMoney());
             upgradeButtons.Add(returned);
         }
 

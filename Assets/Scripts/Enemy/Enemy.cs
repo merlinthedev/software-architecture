@@ -9,8 +9,8 @@ using TMPro;
 public class Enemy : MonoBehaviour, IEnemy {
 
     [SerializeField] private float movementSpeed;
-    [SerializeField] private int health;
-    [SerializeField] private int maxHealth;
+    [SerializeField] private float health;
+    [SerializeField] private float maxHealth;
     [SerializeField] private int value;
 
     [SerializeField] private bool alive;
@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour, IEnemy {
         }
     }
 
-    public int Health {
+    public float Health {
         get {
             return health;
         }
@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour, IEnemy {
         }
     }
 
-    public int MaxHealth {
+    public float MaxHealth {
         get {
             return maxHealth;
         }

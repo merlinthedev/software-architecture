@@ -36,7 +36,7 @@ public class UIUpgradeButton : MonoBehaviour {
 
     }
 
-    private void evaluateButtonColors(int globalMoney) {
+    public void evaluateButtonColors(int globalMoney) {
         if (tower != null) {
             if (tower.getCurrentUpgradeFromType(upgradeType).getParent() != null) {
                 if (tower.getCurrentUpgradeFromType(upgradeType).getParent().getCost() > globalMoney) {
@@ -77,7 +77,7 @@ public class UIUpgradeButton : MonoBehaviour {
         }
 
 
-        upgradeController.hideUI();
+        // upgradeController.hideUI();
     }
 
 }

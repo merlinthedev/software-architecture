@@ -259,13 +259,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steps: 32
-  range: 3
+  range: 5
   lineRenderer: {fileID: 2607026087779894065}
   targetCollider: {fileID: 2607026087779894066}
   drawHeight: 0
-  fireRate: 1
-  damage: 4
-  cost: 50
+  fireRate: 0.8
+  damage: 7
+  cost: 80
   rangeUpgrades:
   - {fileID: 11400000, guid: 492fa701cb1ab5d48a6d3cde6f65f9a2, type: 2}
   - {fileID: 11400000, guid: 049aa63efdcb69942b1ca7f3e264f3de, type: 2}

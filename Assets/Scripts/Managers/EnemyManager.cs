@@ -7,7 +7,7 @@ public class EnemyManager : MonoBehaviour {
 
     [Header("Spawning")]
     [SerializeField] private int waveDelay;
-    [SerializeField] private int spawnRate;
+    [SerializeField] private float spawnRate;
     [SerializeField] private Transform spawnerPosition;
     [SerializeField] private Transform endpointTransform;
     [SerializeField] private bool shouldSpawn = true;
@@ -65,12 +65,23 @@ public class EnemyManager : MonoBehaviour {
 
             EventBus<WavePauseEvent>.Raise(new WavePauseEvent(false, 0));
 
+
+
             foreach (Wave wave in waveContents) {
                 // GameManager.getInstance().setBuildingPhase(false);
                 GameManager.getInstance().setWave(waveContents.IndexOf(wave) + 1);
+
+                if (spawnRate > 0.4f) {
+                    spawnRate -= 0.15f;
+                }
+
                 EventBus<UpdateWaveEvent>.Raise(new UpdateWaveEvent(GameManager.getInstance().getWaveNumber()));
                 foreach (Enemy enemy in wave.enemies) {
                     Enemy returned = Instantiate(enemy, spawnerPosition.position, Quaternion.identity);
+                    // Increase enemy heatlh based on wave number
+                    returned.Health += Mathf.Clamp((waveContents.IndexOf(wave) * 20), 10, 200);
+                    returned.MaxHealth = returned.Health;
+                    Debug.Log("Enemy health: " + returned.Health);
                     enemyMap.Add(returned.getCollider(), returned);
                     enemyList.Add(returned);
                     returned.setDestinationTransform(endpointTransform);

@@ -141,7 +141,7 @@ public class SingleTargetTower : Tower {
     }
 
     protected override IEnumerator attack() {
-        while (true) {
+        while (true) {            
             if (targets.Count > 0) {
                 if (targets[0].Alive) {
                     targets[0].takeDamage(damage, Enemy.DamageType.FLAT);
@@ -152,6 +152,9 @@ public class SingleTargetTower : Tower {
             }
             yield return new WaitForSeconds(fireRate);
         }
+
+        
+
     }
 
 
@@ -177,6 +180,9 @@ public class SingleTargetTower : Tower {
             var enemy = EnemyManager.getInstance().getEnemyFromMap(other);
             if (targets.Contains(enemy)) {
                 targets.Remove(enemy);
+
+                StopCoroutine(attack());    
+                StartCoroutine(attack());            
             }
         }
     }
