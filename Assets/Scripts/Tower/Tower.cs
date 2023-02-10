@@ -18,12 +18,12 @@ public abstract class Tower : MonoBehaviour {
     public abstract int Cost { get; set; }
 
     protected abstract IEnumerator attack();
+    protected abstract void onTowerPlaced(TowerPlacedEvent e);
 
     public abstract Upgrade getNextUpgrade(string upgradeType);
     public abstract List<Upgrade> getUpgradeListFromType(string upgradeType);
     public abstract Upgrade getCurrentUpgradeFromType(string upgradeType);
     public abstract Dictionary<string, List<Upgrade>> getUpgradeMap();
-    protected abstract void onTowerPlaced(TowerPlacedEvent e);
 
     public abstract int getRangeLevel();
     public abstract int getAttackSpeedLevel();
