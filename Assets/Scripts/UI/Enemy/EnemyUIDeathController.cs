@@ -21,6 +21,7 @@ public class EnemyUIDeathController : MonoBehaviour {
 
     private void onEnemyKilled(EnemyKilledEvent e) {
         enemyDeathText.text = e.enemy.Value.ToString();
+        enemyDeathText.color = new Color(255, 215, 0);
         Debug.LogWarning(e.enemy.Value);
         enemyDeathTextTransform.position = Camera.main.WorldToScreenPoint(e.enemy.transform.position);
 
