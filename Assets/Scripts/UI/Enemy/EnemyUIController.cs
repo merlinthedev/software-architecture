@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,10 @@ public class EnemyUIController : MonoBehaviour {
     [SerializeField] private Image healthBarImage;
 
     private void Update() {
+        updateEnemyHealthUI();
+    }
+
+    private void updateEnemyHealthUI() {
         if (enemy != null) {
             float healthPercentage = (float)enemy.Health / (float)enemy.MaxHealth;
             healthBarImage.rectTransform.sizeDelta = new Vector2(healthPercentage * 4, healthBarImage.rectTransform.sizeDelta.y);
