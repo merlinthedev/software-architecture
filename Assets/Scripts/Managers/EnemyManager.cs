@@ -51,7 +51,7 @@ public class EnemyManager : MonoBehaviour {
         }
     }
 
-    private void startSpawn() {
+    public void startSpawn() {
         StartCoroutine(spawnEnemy());
     }
 
@@ -81,7 +81,6 @@ public class EnemyManager : MonoBehaviour {
                     // Increase enemy heatlh based on wave number
                     returned.Health += Mathf.Clamp((waveContents.IndexOf(wave) * 20), 10, 200);
                     returned.MaxHealth = returned.Health;
-                    Debug.Log("Enemy health: " + returned.Health);
                     enemyMap.Add(returned.getCollider(), returned);
                     enemyList.Add(returned);
                     returned.setDestinationTransform(endpointTransform);
@@ -133,15 +132,26 @@ public class EnemyManager : MonoBehaviour {
         }
     }
 
+    public bool getShouldSpawn() {
+        return this.shouldSpawn;
+    }
 
-    // public Dictionary<Collider, Enemy> getEnemyMap() {
-    //     return this.enemyMap;
-    // }
+    public Dictionary<Collider, Enemy> getEnemyMap() {
+        return this.enemyMap;
+    }
 
     // public List<Enemy> getEnemyList() {
     //     return this.enemyList;
 
     // }
+
+    public float getSpawnRate() {
+        return this.spawnRate;
+    }
+
+    public float getWaveDelay() {
+        return this.waveDelay;
+    }
 
 
     public Enemy getEnemyFromMap(Collider collider) {

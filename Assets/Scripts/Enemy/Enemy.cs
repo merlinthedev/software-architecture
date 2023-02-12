@@ -127,6 +127,7 @@ public class Enemy : MonoBehaviour, IEnemy {
                 if (this.Health - (int)damage <= 0) {
                     // enemy needs to die
                     //Debug.LogError("Enemy has died however, you have not implemented this method yet :)");
+                    this.Health = 0;
                     die();
                     return;
                 }

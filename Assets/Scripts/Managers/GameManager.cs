@@ -1,5 +1,3 @@
-using Unity.VisualScripting.Dependencies.NCalc;
-
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -134,6 +132,10 @@ public class GameManager : MonoBehaviour {
 
     public bool isGameOver() {
         return this.gameOver;
+    }
+
+    public void setGameOver(bool value) {
+        this.gameOver = value;
     }
 
     public void setGameWon(bool value) {
