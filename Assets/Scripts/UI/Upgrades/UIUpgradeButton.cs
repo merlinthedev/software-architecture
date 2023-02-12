@@ -28,14 +28,6 @@ public class UIUpgradeButton : MonoBehaviour {
         evaluateButtonColors(e.money);
     }
 
-    void Start() {
-
-    }
-
-    void Update() {
-
-    }
-
     public void evaluateButtonColors(int globalMoney) {
         if (tower != null) {
             if (tower.getCurrentUpgradeFromType(upgradeType).getParent() != null) {
@@ -55,6 +47,16 @@ public class UIUpgradeButton : MonoBehaviour {
                 isMaxed = true;
             } else {
                 upgradeName.text = upgradeType + " \n" + tower.getNextUpgrade(upgradeType).getCost();
+            }
+        }
+    }
+
+    public void upgradeTower() {
+        if (!isMaxed) {
+            if (GameManager.enoughMoney(tower.getNextUpgrade(upgradeType).getCost())) {
+                EventBus<RemoveMoneyEvent>.Raise(new RemoveMoneyEvent(tower.getNextUpgrade(upgradeType).getCost()));
+                EventBus<TowerUpgradeEvent>.Raise(new TowerUpgradeEvent(upgradeType, tower));
+                evaluateButtonText();
             }
         }
     }
@@ -79,17 +81,6 @@ public class UIUpgradeButton : MonoBehaviour {
         upgradeName.text = text;
     }
 
-    public void upgradeTower() {
-        if (!isMaxed) {
-            if (GameManager.enoughMoney(tower.getNextUpgrade(upgradeType).getCost())) {
-                EventBus<RemoveMoneyEvent>.Raise(new RemoveMoneyEvent(tower.getNextUpgrade(upgradeType).getCost()));
-                EventBus<TowerUpgradeEvent>.Raise(new TowerUpgradeEvent(upgradeType, tower));
-                evaluateButtonText();
-            }
-        }
 
-
-        // upgradeController.hideUI();
-    }
 
 }

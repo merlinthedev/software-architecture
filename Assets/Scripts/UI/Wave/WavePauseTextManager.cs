@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using TMPro;
 
 using UnityEngine;
@@ -17,15 +18,8 @@ public class WavePauseTextManager : MonoBehaviour {
         EventBus<WavePauseEvent>.Unsubscribe(onWavePause);
     }
 
-    void Start() {
-
-    }
-
-    void Update() {
-
-    }
 
     private void onWavePause(WavePauseEvent e) {
         wavePauseText.text = e.isPaused ? "Next wave will start in " + e.timeLeft + " seconds." : "";
-    } 
+    }
 }

@@ -187,6 +187,9 @@ class AOETower : Tower {
                 case "Damage":
                     onDamageUpgrade();
                     break;
+                default:
+                    Debug.LogError("Invalid upgrade type: " + e.upgradeType + " for tower: " + this.name);
+                    break;
             }
         }
     }
@@ -232,6 +235,7 @@ class AOETower : Tower {
             case "Damage":
                 return damageLevel;
             default:
+                Debug.LogError("Invalid upgrade type: " + upgradeType + " for tower: " + this.name);
                 return -1;
         }
     }
@@ -245,6 +249,7 @@ class AOETower : Tower {
             case "Damage":
                 return upgrades["Damage"][damageLevel];
             default:
+                Debug.LogError("Invalid upgrade type: " + upgradeType + " for tower: " + this.name);
                 return null;
         }
     }
@@ -258,12 +263,18 @@ class AOETower : Tower {
             case "Damage":
                 return upgrades["Damage"][damageLevel + 1];
             default:
+                Debug.LogError("Invalid upgrade type: " + upgradeType + " for tower: " + this.name);
                 return null;
         }
     }
 
     public override List<Upgrade> getUpgradeListFromType(string upgradeType) {
-        return upgrades[upgradeType];
+        if (upgrades.ContainsKey(upgradeType)) {
+            return upgrades[upgradeType];
+        } else {
+            Debug.LogError("Invalid upgrade type: " + upgradeType + " for tower: " + this.name);
+            return null;
+        }
     }
 
     public override Dictionary<string, List<Upgrade>> getUpgradeMap() {

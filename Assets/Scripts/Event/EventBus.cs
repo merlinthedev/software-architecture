@@ -15,6 +15,14 @@ public class EventBus<T> where T : Event {
     }
 }
 
+// To create a new event, create a new class that inherits from Event and add it to the list below
+// To raise an event, call EventBus<YourEvent>.Raise(new YourEvent(...));
+// To subscribe to an event, call EventBus<YourEvent>.Subscribe(yourHandler); in your OnEnable() method
+// To unsubscribe from an event, call EventBus<YourEvent>.Unsubscribe(yourHandler); in your OnDisable() method
+// To pass data to an event, add it to the constructor of your event class
+// To access data from an event, add a public field to your event class and set it in the constructor
+
+
 public class GlobalDamageEvent : Event {
 
     public Enemy enemy;
@@ -65,7 +73,7 @@ public class TowerUnselectEvent : Event {
 
 }
 
-public class TowerUpgradeEvent: Event {
+public class TowerUpgradeEvent : Event {
 
     public string upgradeType;
     public Tower tower;
